@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "npm run build:watch & (cd hugo && hugo server)",
     "build:watch": "parcel watch elm/main.js -d hugo/static/dist",
-    "build": "parcel build elm/main.js -d hugo/static/dist"
+    "build:elm": "parcel build elm/main.js -d hugo/static/dist",
+    "build:hugo": "(cd hugo && hugo)",
+    "build": "npm run build:elm && npm run build:hugo"
   },
   "author": "Rene & Ryan",
   "license": "ISC",
