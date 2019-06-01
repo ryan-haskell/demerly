@@ -1,0 +1,7 @@
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "My New Hugo Site"
+[outputs]
+    page = ["HTML", "json"] # A player
+    section = ["HTML", "json"] # All players
+    home = ["HTML", "json"] # Everything
