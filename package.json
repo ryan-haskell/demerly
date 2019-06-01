@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run build:watch & (cd hugo && hugo server)",
-    "build:watch": "parcel watch elm/main.js -d hugo/static/dist",
+    "dev": "npm run build:elm:watch & (cd hugo && hugo server)",
+    "build:elm:watch": "parcel watch elm/main.js -d hugo/static/dist",
     "build:elm": "parcel build elm/main.js -d hugo/static/dist",
     "build:hugo": "(cd hugo && hugo)",
     "build": "npm run build:elm && npm run build:hugo"
