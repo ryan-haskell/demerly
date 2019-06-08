@@ -2,6 +2,7 @@ module Main exposing (main)
 
 import Browser
 import Css exposing (..)
+import Css.Global as Global
 import Html exposing (Html)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (css)
@@ -98,22 +99,38 @@ spacing =
 view : Model -> Html.Html Msg
 view model =
     Html.Styled.toUnstyled <|
-        case model.page of
-            PeopleDetailModel model_ ->
-                Html.Styled.map PeopleDetailMsg
-                    (Page.PeopleDetail.view model_)
+        div []
+            [ Global.global globalStyles
+            , case model.page of
+                PeopleDetailModel model_ ->
+                    Html.Styled.map PeopleDetailMsg
+                        (Page.PeopleDetail.view model_)
 
-            NotFoundModel ->
-                div
-                    [ css
-                        [ fontSize spacing.big
-                        , color (rgb 255 100 100)
-                        , margin2 (px 100) (rem 5)
+                NotFoundModel ->
+                    div
+                        [ css
+                            [ fontSize spacing.big
+                            , color (rgb 255 100 100)
+                            , margin2 (px 100) (rem 5)
+                            ]
                         ]
-                    ]
-                    [ text "Page not found." ]
+                        [ text "Page not found." ]
+            ]
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
+
+
+globalStyles =
+    [ Global.selector "body"
+        [ backgroundColor (rgb 225 225 225)
+        ]
+    , Global.selector "html, body, [data-elm-hot]"
+        [ height (pct 100)
+        ]
+    , Global.selector "*"
+        [ boxSizing borderBox
+        ]
+    ]
