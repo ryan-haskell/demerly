@@ -3,7 +3,7 @@ module Page.PeopleDetail exposing (Model, Msg, init, update, view)
 import Components
 import Css exposing (..)
 import Css.Transitions as Transitions
-import Data.Settings exposing (Link, Settings)
+import Data.Settings exposing (Settings)
 import Html.Attributes as Attr
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (alt, attribute, css, href, src)
@@ -46,16 +46,24 @@ Heading up his own firm allows Mark to focus on what he values most: designing h
 Mark has Bachelor of Science in X and Bachelor of Science in Architecture degrees from Ball State University. 
     """
         }
-        { logo = "/images/logo-mobile.svg"
-        , links =
-            [ Link "Projects" "/projects"
-            , Link "Process" "/process"
-            , Link "Profile" "/profile"
-            , Link "Contact" "/contact"
-            ]
-        , address = "6500 Westfield Boulevard   /   Indianapolis, IN 46220"
-        , phone = "317.847.0724"
-        , fax = "888.895.2811"
+        { header =
+            { brand = "Demerly Architects"
+            , logos =
+                { mobile = "/images/logo-mobile.svg"
+                , desktop = "/images/logo-desktop.svg"
+                }
+            , linkLabels =
+                { projects = "Projects"
+                , process = "Process"
+                , profile = "Profile"
+                , contact = "Contact"
+                }
+            }
+        , footer =
+            { address = "6500 Westfield Boulevard   /   Indianapolis, IN 46220"
+            , phone = "317.847.0724"
+            , fax = "888.895.2811"
+            }
         }
 
 

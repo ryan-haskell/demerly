@@ -6,7 +6,7 @@ module Components exposing
 
 import Css exposing (..)
 import Css.Transitions as Transitions
-import Data.Settings exposing (Link, Settings)
+import Data.Settings exposing (Settings)
 import Html.Attributes as Attr
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (alt, attribute, css, href, src)
@@ -48,8 +48,8 @@ navbar settings onMenuClick model =
             ]
             [ a [ href "/" ]
                 [ img
-                    [ src settings.logo
-                    , alt "Demerly Architext"
+                    [ src settings.header.logos.mobile
+                    , alt settings.header.brand
                     ]
                     []
                 ]
@@ -82,8 +82,14 @@ menuIcon model =
     img [ src iconToShow, attribute "aria-hidden" "true" ] []
 
 
-mainMenuLink : Link -> Html msg
-mainMenuLink { label, url } =
+type alias Link =
+    { label : String
+    , url : String
+    }
+
+
+mainMenuLink : ( String, String ) -> Html msg
+mainMenuLink ( label, url ) =
     a
         [ href url
         , css
@@ -148,7 +154,17 @@ mainMenu settings model =
             , Transitions.transition [ Transitions.opacity 200, Transitions.visibility 200 ]
             ]
         ]
-        (List.map mainMenuLink settings.links)
+        (let
+            { projects, process, profile, contact } =
+                settings.header.linkLabels
+         in
+         List.map mainMenuLink
+            [ ( projects, "/projects" )
+            , ( process, "/process" )
+            , ( profile, "/profile" )
+            , ( contact, "/contact" )
+            ]
+        )
 
 
 siteFooter : Settings -> Html msg
@@ -167,15 +183,15 @@ siteFooter settings =
                 , flexWrap wrap
                 ]
             ]
-            [ p [ css [ marginBottom zero ] ] [ text settings.address ]
+            [ p [ css [ marginBottom zero ] ] [ text settings.footer.address ]
             , p []
                 [ span
                     [ css
                         [ marginRight (rem 1)
                         ]
                     ]
-                    [ text ("P - " ++ settings.phone) ]
-                , span [] [ text ("F - " ++ settings.fax) ]
+                    [ text ("P - " ++ settings.footer.phone) ]
+                , span [] [ text ("F - " ++ settings.footer.fax) ]
                 ]
             ]
         ]
