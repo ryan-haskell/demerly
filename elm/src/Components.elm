@@ -43,6 +43,7 @@ navbar settings onMenuClick model =
                 , justifyContent spaceBetween
                 , alignItems center
                 , zIndex (int 2)
+                , boxShadow4 zero (px 1) (px 16) (rgba 0 0 0 0.05)
                 ]
             ]
             [ a [ href "/" ]

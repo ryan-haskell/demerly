@@ -7,41 +7,7 @@ import Html exposing (Html)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (css)
 import Page.PeopleDetail
-
-
-
--- import Markdown
--- type alias Flags =
---     { person : Person
---     , settings : Settings
---     }
--- type alias Settings =
---     { header : Header
---     , footer : Footer
---     }
--- type alias Header =
---     { brand : String
---     , logos : { mobile : String, desktop : String }
---     , linkLabels : LinkLabels
---     }
--- type alias LinkLabels =
---     { projects : String
---     , process : String
---     , profile : String
---     , contact : String
---     }
--- type alias Footer =
---     { address : String
---     , phone : String
---     , fax : String
---     }
--- type alias Person =
---     { bio : String
---     , fullname : Maybe String
---     , email : Maybe String
---     , phone : Maybe String
---     , fax : Maybe String
---     }
+import Style
 
 
 type alias Model =
@@ -100,7 +66,7 @@ view : Model -> Html.Html Msg
 view model =
     Html.Styled.toUnstyled <|
         div []
-            [ Global.global globalStyles
+            [ Global.global Style.globals
             , case model.page of
                 PeopleDetailModel model_ ->
                     Html.Styled.map PeopleDetailMsg
@@ -121,24 +87,3 @@ view model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
-
-
-globalStyles =
-    [ Global.selector "body"
-        [ backgroundColor (rgb 225 225 225)
-        , color (rgb 74 74 74)
-        , fontFamilies [ "Barlow", "sans-serif" ]
-        ]
-    , Global.selector "html, body, [data-elm-hot]"
-        [ height (pct 100)
-        ]
-    , Global.selector "*"
-        [ boxSizing borderBox
-        ]
-    , Global.selector "h1, h2, h3, h4, h5, h6"
-        [ margin zero
-        ]
-    , Global.selector ".rich-text"
-        [ lineHeight (num 1.5)
-        ]
-    ]

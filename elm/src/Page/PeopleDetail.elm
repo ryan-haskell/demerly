@@ -112,7 +112,12 @@ profileSnapshot photo =
             [ backgroundImage (url photo)
             , backgroundSize cover
             , backgroundPosition2 (pct 100) zero
-            , height (px 390)
+            , width (pct 100)
+            , height zero
+            , paddingBottom (pct 100)
+            , Style.breakpoints.desktop
+                [ paddingBottom (pct 60)
+                ]
             ]
         ]
         []
