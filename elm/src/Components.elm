@@ -4,6 +4,7 @@ module Components exposing
     , siteFooter
     )
 
+import Application.Context as Context
 import Css exposing (..)
 import Css.Transitions as Transitions
 import Data.Settings exposing (Settings)
@@ -18,13 +19,7 @@ navbarHeight =
     px 115
 
 
-type alias Model a =
-    { a
-        | isMenuVisible : Bool
-    }
-
-
-navbar : Settings -> msg -> Model a -> Html msg
+navbar : Settings -> msg -> Context.Model -> Html msg
 navbar settings onMenuClick model =
     header
         [ css
@@ -63,7 +58,7 @@ navbar settings onMenuClick model =
         ]
 
 
-menuIcon : Model a -> Html msg
+menuIcon : Context.Model -> Html msg
 menuIcon model =
     let
         hamburgerIconPath =
@@ -73,7 +68,7 @@ menuIcon model =
             "/images/close.svg"
 
         iconToShow =
-            if model.isMenuVisible then
+            if model.isMenuOpen then
                 closeIconPath
 
             else
@@ -123,20 +118,20 @@ mainMenuLink ( label, url ) =
         [ text label ]
 
 
-mainMenu : Settings -> Model a -> Html msg
+mainMenu : Settings -> Context.Model -> Html msg
 mainMenu settings model =
     nav
         [ css
             [ position fixed
             , opacity
-                (if model.isMenuVisible then
+                (if model.isMenuOpen then
                     num 1
 
                  else
                     num 0
                 )
             , property "visibility"
-                (if model.isMenuVisible then
+                (if model.isMenuOpen then
                     "visible"
 
                  else

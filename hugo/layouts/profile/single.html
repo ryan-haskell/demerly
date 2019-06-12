@@ -4,3 +4,9 @@
   <meta name="og:description" content="{{ .Params.description }}">
   <meta name="og:image" content="{{ .Params.image }}">
 {{ end }}
+
+{{ define "scripts" }}
+  <script>
+    window.__FLAGS__ = JSON.parse({{ partial "view-models/profile/single.json" . }})
+  </script>
+{{ end }}

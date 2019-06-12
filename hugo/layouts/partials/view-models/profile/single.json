@@ -1,8 +1,10 @@
 {
   "settings": {{ .Site.Data.settings | jsonify }},
-  "person": {
-    "fullname": {{ .Params.fullname | jsonify }},
-    "jobTitle": {{ .Params.jobTitle | jsonify }},
+  "page": {
+    "name": {{ .Params.name | jsonify }},
+    "image": {{ .Params.image | jsonify }},
+    "credentials": {{ .Params.credentials | jsonify }},
+    "position": {{ .Params.position | jsonify }},
     "phone": {{ .Params.phone | jsonify }},
     "fax": {{ .Params.fax | jsonify }},
     "email": {{ .Params.email | jsonify }},

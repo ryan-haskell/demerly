@@ -1,130 +1,198 @@
 module Main exposing (main)
 
 import Application.Context as Context
-import Browser
+import Application.Document as Document exposing (Document)
+import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav
-import Css exposing (..)
-import Css.Global as Global
-import Html exposing (Html)
+import Components
+import Data.Content as Content exposing (Content)
+import Data.Settings as Settings exposing (Settings)
 import Html.Styled exposing (..)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes exposing (class, classList, css)
+import Json.Decode as D
 import Json.Encode as Json
 import Page.ProfileDetail
+import Process
 import Style
+import Task
 import Url exposing (Url)
 
 
 type alias Model =
-    { context : Context.Model
+    { key : Nav.Key
+    , url : Url
+    , transition : Transition
+    , context : Context.Model
     , page : Page
     }
 
 
+type Transition
+    = Hidden
+    | LayoutReady
+    | PageReady
+
+
+isLayoutVisible : Transition -> Bool
+isLayoutVisible t =
+    t /= Hidden
+
+
+isPageVisible : Transition -> Bool
+isPageVisible t =
+    t == PageReady
+
+
 type Page
-    = ProfileDetail Page.ProfileDetail.Content Page.ProfileDetail.Model
+    = ProfileDetail Page.ProfileDetail.Content
     | NotFound
+    | BadJson String
 
 
 type Msg
     = ContextSentMsg Context.Msg
-    | PageSentMsg PageMsg
-    | UserClickedLink Browser.UrlRequest
-    | AppRequestedUrl Url
+    | AppRequestedUrl UrlRequest
+    | AppChangedUrl Url
 
 
-type PageMsg
-    = ProfileDetailPageSentMsg Page.ProfileDetail.Msg
-
-
-type alias Flags =
-    Json.Value
-
-
-main : Program Flags Model Msg
+main : Program Json.Value Model Msg
 main =
     Browser.application
         { init = init
         , update = update
-        , view = view
+        , view = view >> toUnstyled
         , subscriptions = always Sub.none
-        , onUrlRequest = UserClickedLink
-        , onUrlChange = AppRequestedUrl
+        , onUrlRequest = AppRequestedUrl
+        , onUrlChange = AppChangedUrl
         }
 
 
-init : Flags -> ( Model, Cmd Msg )
-init _ =
-    ( Model (ProfileDetail Page.ProfileDetail.init)
+
+-- INIT
+
+
+init : Json.Value -> Url -> Nav.Key -> ( Model, Cmd Msg )
+init json url key =
+    ( initModel json url key
     , Cmd.none
     )
 
 
+initModel : Json.Value -> Url -> Nav.Key -> Model
+initModel json url key =
+    Model
+        key
+        url
+        Hidden
+        Context.init
+        (case D.decodeValue Content.decoder json of
+            Ok content ->
+                case content of
+                    Content.ProfileDetail settings page ->
+                        ProfileDetail
+                            (Page.ProfileDetail.Content
+                                page
+                                settings
+                            )
+
+            Err reason ->
+                BadJson (D.errorToString reason)
+        )
+
+
+
+-- UPDATE
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case ( msg, model.page ) of
-        ( ProfileDetailMsg msg_, ProfileDetail model_ ) ->
-            ( { model | page = ProfileDetail (Page.ProfileDetail.update msg_ model_) }
+    case msg of
+        ContextSentMsg msg_ ->
+            ( { model | context = Context.update msg_ model.context }
             , Cmd.none
             )
 
-        ( ProfileDetailMsg _, _ ) ->
+        AppRequestedUrl request ->
+            ( model, Cmd.none )
+
+        AppChangedUrl url ->
             ( model, Cmd.none )
 
 
-content =
-    { profileDetail =
-        Page.ProfileDetail.Content
-            { photo = Just "/images/photo-mark2.jpg"
-            , name = "Mark Demerly"
-            , email = Just "mark@demerlyarchitects.com"
-            , credentials = Just "AIA, NCARB, LEED-AP"
-            , position = Just "President"
-            , phone = Just "317.847.0724"
-            , fax = Just "888.895.2811"
-            , bio = """
-Heading up his own firm allows Mark to focus on what he values most: designing homes for people to enjoy. His professional, civic and community interests are fueled by his passion for making Indianapolis communities better places to live. As the Midtown Economic Council representative, he advocates for responsible growth and more public amenities in Midtown Indianapolis development. He launched the Broad Ripple Winter Market to support sustainability and enable local producers and growers to expand their businesses. In short order, the market became a prized amenity for northside residents. Mark has served as the president for IMA Design Arts and Contemporary Arts support groups, and is a past president and founding member of the national AIA Custom Residential Architect Network committee, which has advocated for and increased awareness of the residential architecture profession. He serves on Broad Ripple’s Land Use and Development Committee and participates in numerous other community initiatives. Mark’s devotion to cooking and food has helped inspire his designs for the restaurants the firm has developed for the city’s top chefs. His love of nature, hiking and the outdoors has led to community gardens and memorials to those who have contributed much.
+delay : Float -> msg -> Cmd msg
+delay ms msg =
+    Process.sleep ms
+        |> Task.perform (always msg)
 
-Mark has Bachelor of Science in X and Bachelor of Science in Architecture degrees from Ball State University. 
-"""
-            }
-            { header =
-                { brand = "Demerly Architects"
-                , logos =
-                    { mobile = "/images/logo-mobile.svg"
-                    , desktop = "/images/logo-desktop.svg"
-                    }
-                , linkLabels =
-                    { projects = "Projects"
-                    , process = "Process"
-                    , profile = "Profile"
-                    , contact = "Contact"
-                    }
-                }
-            , footer =
-                { address = "6500 Westfield Boulevard   /   Indianapolis, IN 46220"
-                , phone = "317.847.0724"
-                , fax = "888.895.2811"
-                }
-            }
+
+
+-- VIEW
+
+
+toUnstyled { title, body } =
+    { title = title
+    , body = List.map Html.Styled.toUnstyled body
     }
 
 
-view : Model -> Html.Html Msg
+view : Model -> Document Msg
 view model =
-    Html.Styled.toUnstyled <|
-        div []
-            [ Global.global Style.globals
-            , case model.page of
-                ProfileDetail model_ ->
-                    Html.Styled.map ProfileDetailMsg
-                        (Page.ProfileDetail.view content.profileDetail model_)
-
-                NotFoundModel ->
-                    div
-                        [ css Style.typography.title
-                        ]
-                        [ text "Page not found." ]
+    let
+        ( page, settings ) =
+            viewPage model
+    in
+    { title = page.title
+    , body =
+        [ Style.globals
+        , div
+            [ class "layout"
+            , classList
+                [ ( "layout--visible"
+                  , isLayoutVisible model.transition
+                  )
+                ]
             ]
+            [ Html.Styled.map ContextSentMsg
+                (Components.navbar
+                    settings
+                    Context.ToggleMenu
+                    model.context
+                )
+            , Components.mainMenu
+                settings
+                model.context
+            , div
+                [ class "page"
+                , classList
+                    [ ( "page--visible"
+                      , isPageVisible model.transition
+                      )
+                    ]
+                ]
+                page.body
+            , Components.siteFooter settings
+            ]
+        ]
+    }
+
+
+viewPage : Model -> ( Document Msg, Settings )
+viewPage { page } =
+    case page of
+        ProfileDetail content ->
+            ( Page.ProfileDetail.view content
+            , content.settings
+            )
+
+        NotFound ->
+            ( { title = "Not Found | Demerly Architects", body = [] }
+            , Settings.fallback
+            )
+
+        BadJson reason ->
+            ( { title = "Uh oh | Demerly Architects", body = [ text reason ] }
+            , Settings.fallback
+            )
 
 
 subscriptions : Model -> Sub Msg

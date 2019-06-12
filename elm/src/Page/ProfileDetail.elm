@@ -1,6 +1,5 @@
-module Page.ProfileDetail exposing (Content, Model, Msg, init, update, view)
+module Page.ProfileDetail exposing (Content, title, view)
 
-import Components
 import Css exposing (..)
 import Css.Transitions as Transitions
 import Data.Page.ProfileDetail as Page
@@ -19,53 +18,35 @@ type alias Content =
     }
 
 
-type alias Model =
-    { isMenuVisible : Bool
-    }
-
-
-init : Model
-init =
-    Model False
-
-
-type Msg
-    = UserClickedMenu
-
-
-update : Msg -> Model -> Model
-update msg model =
-    case msg of
-        UserClickedMenu ->
-            { model | isMenuVisible = not model.isMenuVisible }
-
-
-view : Content -> Model -> Html Msg
-view content model =
-    div []
-        [ Components.navbar content.settings UserClickedMenu model
-        , Components.mainMenu content.settings model
-        , mainLayout content
-        , Components.siteFooter content.settings
-        ]
-
-
 contentPaddingHorizontalMobile =
     [ paddingLeft Style.spacing.small
     , paddingRight Style.spacing.small
     ]
 
 
-mainLayout : Content -> Html Msg
-mainLayout content =
-    main_ []
-        [ optionally profileSnapshot content.page.photo
-        , profileDeets content
-        , viewBio content.page.bio
+title : Content -> String
+title { page } =
+    String.join " | "
+        [ page.name
+        , "Profile"
+        , "Demerly Architects"
         ]
 
 
-profileSnapshot : String -> Html Msg
+view : Content -> { title : String, body : List (Html msg) }
+view content =
+    { title = title content
+    , body =
+        [ main_ []
+            [ optionally profileSnapshot content.page.image
+            , profileDeets content
+            , viewBio content.page.bio
+            ]
+        ]
+    }
+
+
+profileSnapshot : String -> Html msg
 profileSnapshot photo =
     div
         [ css
@@ -93,7 +74,7 @@ designMark =
     ]
 
 
-profileDeets : Content -> Html Msg
+profileDeets : Content -> Html msg
 profileDeets content =
     div
         [ css
@@ -122,7 +103,7 @@ viewSubheader stuff =
     div [ css Style.typography.subtitle ] [ text stuff ]
 
 
-viewBio : String -> Html Msg
+viewBio : String -> Html msg
 viewBio bioMarkdown =
     div
         [ css
@@ -140,7 +121,7 @@ optionally viewFn maybe =
         |> Maybe.withDefault (text "")
 
 
-viewEmail : String -> Html Msg
+viewEmail : String -> Html msg
 viewEmail email =
     p
         []
@@ -152,7 +133,7 @@ viewEmail email =
         ]
 
 
-phoneCombo : String -> String -> Html Msg
+phoneCombo : String -> String -> Html msg
 phoneCombo prefix digits =
     span
         [ css

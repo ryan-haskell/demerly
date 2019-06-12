@@ -1,4 +1,4 @@
-module Data.Settings exposing (Settings, decoder)
+module Data.Settings exposing (Settings, decoder, fallback)
 
 import Json.Decode as D exposing (Decoder)
 
@@ -74,3 +74,22 @@ footerDecoder =
         (D.field "address" D.string)
         (D.field "phone" D.string)
         (D.field "fax" D.string)
+
+
+
+-- Fallback
+
+
+fallback : Settings
+fallback =
+    Settings
+        (Header
+            "Demerly Architects"
+            (Logos "/images/logo-mobile.svg" "/images/logo-desktop.svg")
+            (LinkLabels "Projects" "Process" "Profile" "Contact")
+        )
+        (Footer
+            "6500 Westfield Boulevard / Indianapolis, IN 46220"
+            "317.847.0724"
+            "888.895.2811"
+        )
