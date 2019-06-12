@@ -346,15 +346,41 @@ profileDeets =
             [ phoneCombo "p" content.page.phone
             , phoneCombo "f" content.page.fax
             ]
+        , case content.page.email of
+            Just value ->
+                viewemail value
 
-        -- p
-        -- []
-        -- [ a
-        --     [ href ("mailto:" ++ content.page.email)
-        --     ]
-        --     [ text content.page.email
-        --     ]
-        -- ]
+            Nothing ->
+                text ""
+        , content.page.email
+            -- Maybe String
+            |> Maybe.map viewemail
+            -- Maybe (Html Msg)
+            |> Maybe.withDefault (text "")
+
+        -- (Html Msg)
+        ]
+
+
+renemap : (a -> b) -> Maybe a -> Maybe b
+renemap fn maybe =
+    case maybe of
+        Just value ->
+            Just (fn value)
+
+        Nothing ->
+            Nothing
+
+
+viewemail : String -> Html Msg
+viewemail email =
+    p
+        []
+        [ a
+            [ href ("mailto:" ++ email)
+            ]
+            [ text email
+            ]
         ]
 
 
