@@ -13,6 +13,7 @@ import Json.Decode as D
 import Json.Encode as Json
 import Page.ProfileDetail
 import Process
+import Route exposing (Route)
 import Style
 import Task
 import Url exposing (Url)
@@ -94,22 +95,25 @@ initModel json url key =
         Context.init
         (case D.decodeValue Content.decoder json of
             Ok content ->
-                initPage content
+                initPage (Route.fromUrl url) content
 
             Err reason ->
                 BadJson (D.errorToString reason)
         )
 
 
-initPage : Content -> Page
-initPage content =
-    case content of
-        Content.ProfileDetail settings page ->
+initPage : Route -> Content -> Page
+initPage route content =
+    case ( route, content ) of
+        ( Route.ProfileDetail slug, Content.ProfileDetail settings page ) ->
             ProfileDetail
                 (Page.ProfileDetail.Content
                     page
                     settings
                 )
+
+        ( _, _ ) ->
+            NotFound
 
 
 
