@@ -3,7 +3,7 @@ module Page.PeopleDetail exposing (Model, Msg, init, update, view)
 import Css exposing (..)
 import Css.Transitions as Transitions
 import Html.Styled exposing (..)
-import Html.Styled.Attributes exposing (css, href, src)
+import Html.Styled.Attributes exposing (alt, attribute, css, href, src)
 import Html.Styled.Events exposing (onClick)
 
 
@@ -28,6 +28,9 @@ type alias Link =
 type alias Settings =
     { logo : String
     , links : List Link
+    , address : String
+    , phone : String
+    , fax : String
     }
 
 
@@ -40,7 +43,7 @@ type alias Content =
 content : Content
 content =
     Content
-        { photo = "/images/photo-mark.jpg"
+        { photo = "/images/photo-mark2.jpg"
         , name = "Mark Demerly"
         , email = Just "mark@demerlyarchitects.com"
         , credentials = "AIA, NCARB, LEED-AP"
@@ -60,6 +63,9 @@ content =
             , Link "Profile" "/profile"
             , Link "Contact" "/contact"
             ]
+        , address = "6500 Westfield Boulevard   /   Indianapolis, IN 46220"
+        , phone = "317.847.0724"
+        , fax = "888.895.2811"
         }
 
 
@@ -89,6 +95,8 @@ view model =
     div []
         [ navbar model
         , mainMenu model
+        , mainLayout
+        , siteFooter
         ]
 
 
@@ -111,16 +119,23 @@ navbar model =
                 , top zero
                 , backgroundColor (rgb 255 255 255)
                 , displayFlex
-                , padding2 (px 20) (px 32)
+                , padding2 (px 20) siteHorizontalPadding.mobile
                 , justifyContent spaceBetween
                 , alignItems center
                 , zIndex (int 2)
                 ]
             ]
             [ a [ href "/" ]
-                [ img [ src content.settings.logo ] []
+                [ img
+                    [ src content.settings.logo
+                    , alt "Demerly Architext"
+                    ]
+                    []
                 ]
-            , button [ onClick UserClickedMenu ]
+            , button
+                [ onClick UserClickedMenu
+                , attribute "aria-label" "Toggle Menu"
+                ]
                 [ menuIcon model
                 ]
             ]
@@ -143,7 +158,7 @@ menuIcon model =
             else
                 hamburgerIconPath
     in
-    img [ src iconToShow ] []
+    img [ src iconToShow, attribute "aria-hidden" "true" ] []
 
 
 mainMenuLink : Link -> Html Msg
@@ -215,6 +230,167 @@ mainMenu model =
         (List.map mainMenuLink content.settings.links)
 
 
+siteFooter : Html Msg
+siteFooter =
+    footer
+        [ css
+            [ padding2 (px 20) siteHorizontalPadding.mobile
+            , backgroundColor (rgb 255 255 255)
+            ]
+        ]
+        [ address
+            [ css
+                [ displayFlex
+                , fontStyle normal
+                , flexDirection rowReverse
+                , flexWrap wrap
+                ]
+            ]
+            [ p [ css [ marginBottom zero ] ] [ text content.settings.address ]
+            , p []
+                [ span
+                    [ css
+                        [ marginRight (rem 1)
+                        ]
+                    ]
+                    [ text ("P - " ++ content.settings.phone) ]
+                , span [] [ text ("F - " ++ content.settings.fax) ]
+                ]
+            ]
+        ]
+
+
 colors =
     { milk = rgba 255 255 255 0.95
+    , dark = rgb 74 74 74
+    , charcoal = rgb 151 151 151
     }
+
+
+siteHorizontalPadding =
+    { mobile = px 32
+    , tableet = px 40
+    , desktop = px 120
+    }
+
+
+spacing =
+    { base = px 36
+    , large = px 76
+    , extraLarge = px 100
+    }
+
+
+contentPaddingHorizontalMobile =
+    [ paddingLeft (px 50)
+    , paddingRight (px 50)
+    ]
+
+
+mainLayout : Html Msg
+mainLayout =
+    main_ []
+        [ profileSnapshot
+        , profileDeets
+        ]
+
+
+profileSnapshot : Html Msg
+profileSnapshot =
+    div
+        [ css
+            [ backgroundImage (url content.page.photo)
+            , backgroundSize cover
+            , backgroundPosition2 (pct 100) zero
+            , height (px 390)
+            ]
+        ]
+        []
+
+
+designMark =
+    [ Css.property "content" "''"
+    , display block
+    , height (px 1)
+    , width (px 50)
+    , backgroundColor colors.charcoal
+    , marginTop spacing.base
+    ]
+
+
+profileDeets : Html Msg
+profileDeets =
+    div
+        [ css
+            (List.append contentPaddingHorizontalMobile
+                [ paddingTop (px 50)
+                , after designMark
+                ]
+            )
+        ]
+        [ h1
+            [ css
+                [ fontSize (px 24)
+                , fontWeight (int 600)
+                , marginBottom (px 18)
+                ]
+            ]
+            [ text content.page.name ]
+        , div
+            []
+            [ text content.page.credentials ]
+        , div []
+            [ text content.page.position ]
+        , p
+            []
+            [ phoneCombo "p" content.page.phone
+            , phoneCombo "f" content.page.fax
+            ]
+        , case content.page.email of
+            Just value ->
+                viewemail value
+
+            Nothing ->
+                text ""
+        , content.page.email
+            -- Maybe String
+            |> Maybe.map viewemail
+            -- Maybe (Html Msg)
+            |> Maybe.withDefault (text "")
+
+        -- (Html Msg)
+        ]
+
+
+renemap : (a -> b) -> Maybe a -> Maybe b
+renemap fn maybe =
+    case maybe of
+        Just value ->
+            Just (fn value)
+
+        Nothing ->
+            Nothing
+
+
+viewemail : String -> Html Msg
+viewemail email =
+    p
+        []
+        [ a
+            [ href ("mailto:" ++ email)
+            ]
+            [ text email
+            ]
+        ]
+
+
+phoneCombo : String -> String -> Html Msg
+phoneCombo prefix digits =
+    span
+        [ css
+            [ display inlineBlock
+            , marginRight (px 16)
+            ]
+        ]
+        [ text (prefix ++ ": " ++ digits)
+        ]
