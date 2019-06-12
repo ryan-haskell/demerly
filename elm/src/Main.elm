@@ -1,46 +1,60 @@
 module Main exposing (main)
 
+import Application.Context as Context
 import Browser
+import Browser.Navigation as Nav
 import Css exposing (..)
 import Css.Global as Global
 import Html exposing (Html)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (css)
-import Page.PeopleDetail
+import Json.Encode as Json
+import Page.ProfileDetail
 import Style
+import Url exposing (Url)
 
 
 type alias Model =
-    { page : Page
+    { context : Context.Model
+    , page : Page
     }
 
 
 type Page
-    = PeopleDetailModel Page.PeopleDetail.Model
-    | NotFoundModel
+    = ProfileDetail Page.ProfileDetail.Content Page.ProfileDetail.Model
+    | NotFound
 
 
 type Msg
-    = PeopleDetailMsg Page.PeopleDetail.Msg
+    = ContextSentMsg Context.Msg
+    | PageSentMsg PageMsg
+    | UserClickedLink Browser.UrlRequest
+    | AppRequestedUrl Url
+
+
+type PageMsg
+    = ProfileDetailPageSentMsg Page.ProfileDetail.Msg
 
 
 type alias Flags =
-    ()
+    Json.Value
 
 
 main : Program Flags Model Msg
 main =
-    Browser.element
+    Browser.application
         { init = init
         , update = update
         , view = view
-        , subscriptions = subscriptions
+        , subscriptions = always Sub.none
+        , onUrlRequest = UserClickedLink
+        , onUrlChange = AppRequestedUrl
         }
 
 
 init : Flags -> ( Model, Cmd Msg )
 init _ =
-    ( Model (PeopleDetailModel Page.PeopleDetail.init)
+    ( Model (ProfileDetail Page.ProfileDetail.init)
     , Cmd.none
     )
 
@@ -48,18 +62,18 @@ init _ =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case ( msg, model.page ) of
-        ( PeopleDetailMsg msg_, PeopleDetailModel model_ ) ->
-            ( { model | page = PeopleDetailModel (Page.PeopleDetail.update msg_ model_) }
+        ( ProfileDetailMsg msg_, ProfileDetail model_ ) ->
+            ( { model | page = ProfileDetail (Page.ProfileDetail.update msg_ model_) }
             , Cmd.none
             )
 
-        ( PeopleDetailMsg _, _ ) ->
+        ( ProfileDetailMsg _, _ ) ->
             ( model, Cmd.none )
 
 
 content =
     { profileDetail =
-        Page.PeopleDetail.Content
+        Page.ProfileDetail.Content
             { photo = Just "/images/photo-mark2.jpg"
             , name = "Mark Demerly"
             , email = Just "mark@demerlyarchitects.com"
@@ -101,9 +115,9 @@ view model =
         div []
             [ Global.global Style.globals
             , case model.page of
-                PeopleDetailModel model_ ->
-                    Html.Styled.map PeopleDetailMsg
-                        (Page.PeopleDetail.view content.profileDetail model_)
+                ProfileDetail model_ ->
+                    Html.Styled.map ProfileDetailMsg
+                        (Page.ProfileDetail.view content.profileDetail model_)
 
                 NotFoundModel ->
                     div

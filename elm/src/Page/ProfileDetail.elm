@@ -1,4 +1,4 @@
-module Page.PeopleDetail exposing (Content, Model, Msg, init, update, view)
+module Page.ProfileDetail exposing (Content, Model, Msg, init, update, view)
 
 import Components
 import Css exposing (..)
