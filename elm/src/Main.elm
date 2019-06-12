@@ -126,11 +126,16 @@ subscriptions model =
 globalStyles =
     [ Global.selector "body"
         [ backgroundColor (rgb 225 225 225)
+        , color (rgb 74 74 74)
+        , fontFamilies [ "Barlow", "sans-serif" ]
         ]
     , Global.selector "html, body, [data-elm-hot]"
         [ height (pct 100)
         ]
     , Global.selector "*"
         [ boxSizing borderBox
+        ]
+    , Global.selector "h1, h2, h3, h4, h5, h6"
+        [ margin zero
         ]
     ]
