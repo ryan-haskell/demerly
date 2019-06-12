@@ -9,6 +9,7 @@ module Style exposing
 import Css exposing (..)
 import Css.Global as Global
 import Css.Media as Media exposing (only, screen, withMedia)
+import Css.Transitions as Transitions
 
 
 colors =
@@ -89,5 +90,14 @@ globals =
             ]
         , Global.selector ".rich-text"
             [ lineHeight (num 1.5)
+            ]
+        , Global.selector ".page, .layout"
+            [ opacity zero
+            , Transitions.transition
+                [ Transitions.opacity 300
+                ]
+            ]
+        , Global.selector ".page--visible, .layout--visible"
+            [ opacity (num 1)
             ]
         ]

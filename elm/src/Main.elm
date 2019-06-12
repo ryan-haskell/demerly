@@ -29,8 +29,13 @@ type alias Model =
 
 type Transition
     = Hidden
-    | LayoutReady
+    | PageChanging
     | PageReady
+
+
+pageTransitionSpeed : Float
+pageTransitionSpeed =
+    300
 
 
 isLayoutVisible : Transition -> Bool
@@ -53,6 +58,8 @@ type Msg
     = ContextSentMsg Context.Msg
     | AppRequestedUrl UrlRequest
     | AppChangedUrl Url
+    | PushUrl Url
+    | SetTransition Transition
 
 
 main : Program Json.Value Model Msg
@@ -74,7 +81,7 @@ main =
 init : Json.Value -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init json url key =
     ( initModel json url key
-    , Cmd.none
+    , delay pageTransitionSpeed (SetTransition PageReady)
     )
 
 
@@ -87,17 +94,22 @@ initModel json url key =
         Context.init
         (case D.decodeValue Content.decoder json of
             Ok content ->
-                case content of
-                    Content.ProfileDetail settings page ->
-                        ProfileDetail
-                            (Page.ProfileDetail.Content
-                                page
-                                settings
-                            )
+                initPage content
 
             Err reason ->
                 BadJson (D.errorToString reason)
         )
+
+
+initPage : Content -> Page
+initPage content =
+    case content of
+        Content.ProfileDetail settings page ->
+            ProfileDetail
+                (Page.ProfileDetail.Content
+                    page
+                    settings
+                )
 
 
 
@@ -113,10 +125,37 @@ update msg model =
             )
 
         AppRequestedUrl request ->
-            ( model, Cmd.none )
+            case request of
+                Internal url ->
+                    ( { model
+                        | transition = PageChanging
+                      }
+                    , delay pageTransitionSpeed (PushUrl url)
+                    )
+
+                External url ->
+                    ( model
+                    , Nav.load url
+                    )
+
+        PushUrl url ->
+            ( model
+            , Nav.pushUrl model.key (Url.toString url)
+            )
 
         AppChangedUrl url ->
-            ( model, Cmd.none )
+            ( { model
+                | transition = PageReady
+                , context = Context.hideMenu model.context
+                , url = url
+              }
+            , Cmd.none
+            )
+
+        SetTransition transition ->
+            ( { model | transition = transition }
+            , Cmd.none
+            )
 
 
 delay : Float -> msg -> Cmd msg
