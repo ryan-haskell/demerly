@@ -263,6 +263,7 @@ siteFooter =
 colors =
     { milk = rgba 255 255 255 0.95
     , dark = rgb 74 74 74
+    , charcoal = rgb 151 151 151
     }
 
 
@@ -307,12 +308,23 @@ profileSnapshot =
         []
 
 
+designMark =
+    [ Css.property "content" "''"
+    , display block
+    , height (px 1)
+    , width (px 50)
+    , backgroundColor colors.charcoal
+    , marginTop spacing.base
+    ]
+
+
 profileDeets : Html Msg
 profileDeets =
     div
         [ css
             (List.append contentPaddingHorizontalMobile
                 [ paddingTop (px 50)
+                , after designMark
                 ]
             )
         ]
@@ -320,6 +332,7 @@ profileDeets =
             [ css
                 [ fontSize (px 24)
                 , fontWeight (int 600)
+                , marginBottom (px 18)
                 ]
             ]
             [ text content.page.name ]
@@ -328,7 +341,8 @@ profileDeets =
             [ text content.page.credentials ]
         , div []
             [ text content.page.position ]
-        , p []
+        , p
+            []
             [ phoneCombo "p" content.page.phone
             , phoneCombo "f" content.page.fax
             ]
@@ -348,7 +362,9 @@ phoneCombo : String -> String -> Html Msg
 phoneCombo prefix digits =
     span
         [ css
-            [ display inlineBlock ]
+            [ display inlineBlock
+            , marginRight (px 16)
+            ]
         ]
         [ text (prefix ++ ": " ++ digits)
         ]
