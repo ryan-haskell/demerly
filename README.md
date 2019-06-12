@@ -8,3 +8,8 @@
 1. `npm install`
 
 1. `npm run dev`
+
+## Functional Specification
+
+The functional specification for this project is in the docs folder.
+

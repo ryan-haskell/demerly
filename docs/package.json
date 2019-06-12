@@ -1,0 +1,15 @@
+{
+  "name": "@lara/demerly-docs",
+  "version": "1.0.0",
+  "description": "> [Ryan Haskell-Glatz](mailto:ryan.nhg@gmail.com), __March 30th, 2019__",
+  "main": "index.js",
+  "scripts": {
+    "build": "vuepress build",
+    "dev": "vuepress dev"
+  },
+  "author": "Ryan Haskell-Glatz",
+  "license": "ISC",
+  "devDependencies": {
+    "vuepress": "1.0.1"
+  }
+}
