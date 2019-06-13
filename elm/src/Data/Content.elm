@@ -1,7 +1,7 @@
 module Data.Content exposing (Content(..), decoder)
 
-import Data.Page.Homepage exposing (Homepage)
-import Data.Page.ProfileDetail exposing (ProfileDetail)
+import Data.Homepage exposing (Homepage)
+import Data.ProfileDetail exposing (ProfileDetail)
 import Data.Settings exposing (Settings)
 import Json.Decode as D exposing (Decoder)
 
@@ -18,8 +18,8 @@ type Content
 decoder : Decoder Content
 decoder =
     D.oneOf
-        [ page ProfileDetail Data.Page.ProfileDetail.decoder
-        , page Homepage Data.Page.Homepage.decoder
+        [ page ProfileDetail Data.ProfileDetail.decoder
+        , page Homepage Data.Homepage.decoder
         ]
 
 

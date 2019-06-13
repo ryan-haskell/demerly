@@ -12,6 +12,7 @@ import Html.Attributes as Attr
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (alt, attribute, css, href, src)
 import Html.Styled.Events exposing (onClick)
+import Route exposing (Route)
 import Style
 
 
@@ -20,7 +21,7 @@ navbarHeight =
 
 
 navbar : Settings -> msg -> Context.Model -> Html msg
-navbar settings onMenuClick model =
+navbar settings onMenuClick context =
     header
         [ css
             [ height navbarHeight ]
@@ -52,14 +53,14 @@ navbar settings onMenuClick model =
                 [ onClick onMenuClick
                 , attribute "aria-label" "Toggle Menu"
                 ]
-                [ menuIcon model
+                [ menuIcon context
                 ]
             ]
         ]
 
 
 menuIcon : Context.Model -> Html msg
-menuIcon model =
+menuIcon context =
     let
         hamburgerIconPath =
             "/images/hamburger.svg"
@@ -68,7 +69,7 @@ menuIcon model =
             "/images/close.svg"
 
         iconToShow =
-            if model.isMenuOpen then
+            if context.isMenuOpen then
                 closeIconPath
 
             else
@@ -83,21 +84,31 @@ type alias Link =
     }
 
 
-mainMenuLink : ( String, String ) -> Html msg
-mainMenuLink ( label, url ) =
+mainMenuLink : Context.Model -> ( String, String ) -> Html msg
+mainMenuLink context ( label, url ) =
+    let
+        activeStyles =
+            [ before
+                [ transform none
+                ]
+            ]
+
+        isActive =
+            String.contains url (Route.toString context.route)
+    in
     a
         [ href url
         , css
-            [ fontSize (px 32)
-            , textTransform uppercase
-            , fontWeight (int 600)
-            , letterSpacing (px 1.78)
-            , fontFamilies [ "Barlow", "sans-serif" ]
-            , textDecoration none
-            , marginBottom (px 16)
-            , color inherit
-            , position relative
-            , before
+            ([ fontSize (px 32)
+             , textTransform uppercase
+             , fontWeight (int 600)
+             , letterSpacing (px 1.78)
+             , fontFamilies [ "Barlow", "sans-serif" ]
+             , textDecoration none
+             , marginBottom (px 16)
+             , color inherit
+             , position relative
+             , before
                 [ Css.property "content" "''"
                 , position absolute
                 , left (px -8)
@@ -108,30 +119,33 @@ mainMenuLink ( label, url ) =
                 , Css.property "transform-origin" "0 0"
                 , Transitions.transition [ Transitions.transform 300 ]
                 ]
-            , hover
-                [ before
-                    [ transform none
-                    ]
-                ]
-            ]
+             , hover activeStyles
+             ]
+                ++ (if isActive then
+                        activeStyles
+
+                    else
+                        []
+                   )
+            )
         ]
         [ text label ]
 
 
 mainMenu : Settings -> Context.Model -> Html msg
-mainMenu settings model =
+mainMenu settings context =
     nav
         [ css
             [ position fixed
             , opacity
-                (if model.isMenuOpen then
+                (if context.isMenuOpen then
                     num 1
 
                  else
                     num 0
                 )
             , property "visibility"
-                (if model.isMenuOpen then
+                (if context.isMenuOpen then
                     "visible"
 
                  else
@@ -153,7 +167,8 @@ mainMenu settings model =
             { projects, process, profile, contact } =
                 settings.header.linkLabels
          in
-         List.map mainMenuLink
+         List.map
+            (mainMenuLink context)
             [ ( projects, "/projects" )
             , ( process, "/process" )
             , ( profile, "/profile" )

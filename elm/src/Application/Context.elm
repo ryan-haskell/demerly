@@ -3,12 +3,16 @@ module Application.Context exposing
     , Msg(..)
     , hideMenu
     , init
+    , setRoute
     , update
     )
+
+import Route exposing (Route)
 
 
 type alias Model =
     { isMenuOpen : Bool
+    , route : Route
     }
 
 
@@ -16,9 +20,9 @@ type Msg
     = ToggleMenu
 
 
-init : Model
-init =
-    Model False
+init : Route -> Model
+init route =
+    Model False route
 
 
 update : Msg -> Model -> Model
@@ -31,3 +35,8 @@ update msg model =
 hideMenu : Model -> Model
 hideMenu model =
     { model | isMenuOpen = False }
+
+
+setRoute : Route -> Model -> Model
+setRoute route model =
+    { model | route = route }

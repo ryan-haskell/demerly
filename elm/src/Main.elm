@@ -13,6 +13,7 @@ import Http
 import Json.Decode as D
 import Json.Encode as Json
 import Page.Homepage
+import Page.NotFound
 import Page.ProfileDetail
 import Process
 import Route exposing (Route)
@@ -23,7 +24,6 @@ import Url exposing (Url)
 
 type alias Model =
     { key : Nav.Key
-    , url : Url
     , transition : Transition
     , context : Context.Model
     , page : Page
@@ -60,8 +60,8 @@ type Page
 
 type Msg
     = ContextSentMsg Context.Msg
-    | AppRequestedUrl UrlRequest
-    | AppChangedUrl Url
+    | UserClickedLink UrlRequest
+    | BrowserChangedUrl Url
     | AppReceivedContent Url (Result Http.Error Content)
     | AppNavigatedTo Url (Result Http.Error Content)
     | SetTransition Transition
@@ -74,8 +74,8 @@ main =
         , update = update
         , view = view >> toUnstyled
         , subscriptions = always Sub.none
-        , onUrlRequest = AppRequestedUrl
-        , onUrlChange = AppChangedUrl
+        , onUrlRequest = UserClickedLink
+        , onUrlChange = BrowserChangedUrl
         }
 
 
@@ -92,14 +92,17 @@ init json url key =
 
 initModel : Json.Value -> Url -> Nav.Key -> Model
 initModel json url key =
+    let
+        route =
+            Route.fromUrl url
+    in
     Model
         key
-        url
         Hidden
-        Context.init
+        (Context.init route)
         (case D.decodeValue Content.decoder json of
             Ok content ->
-                initPage (Route.fromUrl url) content
+                initPage route content
 
             Err reason ->
                 BadJson (D.errorToString reason)
@@ -117,6 +120,9 @@ initPage route content =
                 )
 
         ( Route.Homepage, _ ) ->
+            NotFound
+
+        ( Route.ProfileLanding, _ ) ->
             NotFound
 
         ( Route.ProfileDetail slug, Content.ProfileDetail settings page ) ->
@@ -145,20 +151,28 @@ update msg model =
             , Cmd.none
             )
 
-        AppRequestedUrl request ->
-            case request of
+        UserClickedLink link ->
+            case link of
                 Internal url ->
-                    ( { model
-                        | transition = PageChanging
-                        , context = Context.hideMenu model.context
-                      }
-                    , requestContentFor url
+                    ( model
+                    , Nav.pushUrl model.key (Url.toString url)
                     )
 
                 External url ->
                     ( model
                     , Nav.load url
                     )
+
+        BrowserChangedUrl url ->
+            ( { model
+                | transition = PageChanging
+                , context =
+                    model.context
+                        |> Context.hideMenu
+                        |> Context.setRoute (Route.fromUrl url)
+              }
+            , requestContentFor url
+            )
 
         AppReceivedContent url result ->
             ( model
@@ -167,18 +181,11 @@ update msg model =
 
         AppNavigatedTo url result ->
             ( { model
-                | page =
+                | transition = PageReady
+                , page =
                     result
                         |> Result.map (initPage (Route.fromUrl url))
                         |> Result.withDefault NotFound
-              }
-            , Nav.pushUrl model.key (Url.toString url)
-            )
-
-        AppChangedUrl url ->
-            ( { model
-                | transition = PageReady
-                , url = url
               }
             , Cmd.none
             )
@@ -277,16 +284,12 @@ viewPage { page } =
             )
 
         NotFound ->
-            ( { title = "Not Found | Demerly Architects"
-              , body = [ h1 [] [ text "Page not found." ] ]
-              }
+            ( Page.NotFound.view
             , Settings.fallback
             )
 
         BadJson reason ->
-            ( { title = "Uh oh | Demerly Architects"
-              , body = [ text reason ]
-              }
+            ( Page.NotFound.view
             , Settings.fallback
             )
 

@@ -1,7 +1,7 @@
 module Page.Homepage exposing (Content, view)
 
 import Application.Document exposing (Document)
-import Data.Page.Homepage as Page
+import Data.Homepage as Page
 import Data.Settings exposing (Settings)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr

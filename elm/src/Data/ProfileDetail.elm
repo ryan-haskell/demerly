@@ -1,4 +1,4 @@
-module Data.Page.ProfileDetail exposing (ProfileDetail, decoder)
+module Data.ProfileDetail exposing (ProfileDetail, decoder)
 
 import Json.Decode as D exposing (Decoder)
 

@@ -1,4 +1,4 @@
-module Data.Page.Homepage exposing (Homepage, decoder)
+module Data.Homepage exposing (Homepage, decoder)
 
 import Json.Decode as D exposing (Decoder)
 

@@ -3,7 +3,7 @@ module Page.ProfileDetail exposing (Content, view)
 import Application.Document exposing (Document)
 import Css exposing (..)
 import Css.Transitions as Transitions
-import Data.Page.ProfileDetail as Page
+import Data.ProfileDetail as Page
 import Data.Settings exposing (Settings)
 import Html.Attributes as Attr
 import Html.Styled exposing (..)

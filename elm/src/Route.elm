@@ -1,15 +1,16 @@
 module Route exposing
     ( Route(..)
     , fromUrl
-    , toUrl
+    , toString
     )
 
 import Url exposing (Url)
-import Url.Parser as Parser exposing ((</>), Parser)
+import Url.Parser as Parser exposing ((</>), Parser, s, string, top)
 
 
 type Route
     = Homepage
+    | ProfileLanding
     | ProfileDetail String
     | NotFound
 
@@ -17,8 +18,9 @@ type Route
 router : Parser (Route -> a) a
 router =
     Parser.oneOf
-        [ Parser.map Homepage Parser.top
-        , Parser.map ProfileDetail (Parser.s "profile" </> Parser.string)
+        [ Parser.map Homepage top
+        , Parser.map ProfileLanding (s "profile")
+        , Parser.map ProfileDetail (s "profile" </> string)
         ]
 
 
@@ -27,17 +29,17 @@ fromUrl =
     Parser.parse router >> Maybe.withDefault NotFound
 
 
-toUrl : Route -> Url -> Url
-toUrl route url =
-    { url
-        | path =
-            case route of
-                Homepage ->
-                    "/"
+toString : Route -> String
+toString route =
+    case route of
+        Homepage ->
+            "/"
 
-                ProfileDetail slug ->
-                    "/profile/" ++ slug
+        ProfileLanding ->
+            "/profile"
 
-                NotFound ->
-                    "/not-found"
-    }
+        ProfileDetail slug ->
+            "/profile/" ++ slug
+
+        NotFound ->
+            "/not-found"
