@@ -9,8 +9,10 @@ import Data.Content as Content exposing (Content)
 import Data.Settings as Settings exposing (Settings)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (class, classList, css)
+import Http
 import Json.Decode as D
 import Json.Encode as Json
+import Page.Homepage
 import Page.ProfileDetail
 import Process
 import Route exposing (Route)
@@ -50,7 +52,8 @@ isPageVisible t =
 
 
 type Page
-    = ProfileDetail Page.ProfileDetail.Content
+    = Homepage Page.Homepage.Content
+    | ProfileDetail Page.ProfileDetail.Content
     | NotFound
     | BadJson String
 
@@ -59,7 +62,8 @@ type Msg
     = ContextSentMsg Context.Msg
     | AppRequestedUrl UrlRequest
     | AppChangedUrl Url
-    | PushUrl Url
+    | AppReceivedContent Url (Result Http.Error Content)
+    | AppNavigatedTo Url (Result Http.Error Content)
     | SetTransition Transition
 
 
@@ -105,6 +109,16 @@ initModel json url key =
 initPage : Route -> Content -> Page
 initPage route content =
     case ( route, content ) of
+        ( Route.Homepage, Content.Homepage settings page ) ->
+            Homepage
+                (Page.Homepage.Content
+                    page
+                    settings
+                )
+
+        ( Route.Homepage, _ ) ->
+            NotFound
+
         ( Route.ProfileDetail slug, Content.ProfileDetail settings page ) ->
             ProfileDetail
                 (Page.ProfileDetail.Content
@@ -112,7 +126,10 @@ initPage route content =
                     settings
                 )
 
-        ( _, _ ) ->
+        ( Route.ProfileDetail _, _ ) ->
+            NotFound
+
+        ( Route.NotFound, _ ) ->
             NotFound
 
 
@@ -133,8 +150,9 @@ update msg model =
                 Internal url ->
                     ( { model
                         | transition = PageChanging
+                        , context = Context.hideMenu model.context
                       }
-                    , delay pageTransitionSpeed (PushUrl url)
+                    , requestContentFor url
                     )
 
                 External url ->
@@ -142,15 +160,24 @@ update msg model =
                     , Nav.load url
                     )
 
-        PushUrl url ->
+        AppReceivedContent url result ->
             ( model
+            , delay 300 (AppNavigatedTo url result)
+            )
+
+        AppNavigatedTo url result ->
+            ( { model
+                | page =
+                    result
+                        |> Result.map (initPage (Route.fromUrl url))
+                        |> Result.withDefault NotFound
+              }
             , Nav.pushUrl model.key (Url.toString url)
             )
 
         AppChangedUrl url ->
             ( { model
                 | transition = PageReady
-                , context = Context.hideMenu model.context
                 , url = url
               }
             , Cmd.none
@@ -166,6 +193,23 @@ delay : Float -> msg -> Cmd msg
 delay ms msg =
     Process.sleep ms
         |> Task.perform (always msg)
+
+
+requestContentFor : Url -> Cmd Msg
+requestContentFor url =
+    Http.get
+        { url = apiEndpointFor url.path
+        , expect = Http.expectJson (AppReceivedContent url) Content.decoder
+        }
+
+
+apiEndpointFor : String -> String
+apiEndpointFor url =
+    if String.endsWith "/" url then
+        url ++ "index.json"
+
+    else
+        url ++ "/index.json"
 
 
 
@@ -222,18 +266,27 @@ view model =
 viewPage : Model -> ( Document Msg, Settings )
 viewPage { page } =
     case page of
+        Homepage content ->
+            ( Page.Homepage.view content
+            , content.settings
+            )
+
         ProfileDetail content ->
             ( Page.ProfileDetail.view content
             , content.settings
             )
 
         NotFound ->
-            ( { title = "Not Found | Demerly Architects", body = [] }
+            ( { title = "Not Found | Demerly Architects"
+              , body = [ h1 [] [ text "Page not found." ] ]
+              }
             , Settings.fallback
             )
 
         BadJson reason ->
-            ( { title = "Uh oh | Demerly Architects", body = [ text reason ] }
+            ( { title = "Uh oh | Demerly Architects"
+              , body = [ text reason ]
+              }
             , Settings.fallback
             )
 

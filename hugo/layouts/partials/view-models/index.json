@@ -1,0 +1,6 @@
+{
+  "settings": {{ .Site.Data.settings | jsonify }},
+  "page": {
+    "name": {{ .Params.name | jsonify }}
+  }
+}

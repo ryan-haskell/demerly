@@ -1,5 +1,6 @@
-module Page.ProfileDetail exposing (Content, title, view)
+module Page.ProfileDetail exposing (Content, view)
 
+import Application.Document exposing (Document)
 import Css exposing (..)
 import Css.Transitions as Transitions
 import Data.Page.ProfileDetail as Page
@@ -33,7 +34,7 @@ title { page } =
         ]
 
 
-view : Content -> { title : String, body : List (Html msg) }
+view : Content -> Document msg
 view content =
     { title = title content
     , body =

@@ -1,13 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Demerly Architects</title>
-</head>
-<body>
-  Have you heard of <a href="/profile/mark-demerly">Mark Demerly</a>?
-  <p>How about his <a href="/profile/mark-demerly/index.json">API endpoint?</a></p>
-</body>
-</html>
+{{ define "head" }}
+  <title>{{ .Title }}</title>
+  <meta name="description" content="{{ .Params.description }}">
+  <meta name="og:description" content="{{ .Params.description }}">
+  <meta name="og:image" content="{{ .Params.image }}">
+{{ end }}
+
+{{ define "scripts" }}
+  <script>
+    window.__FLAGS__ = JSON.parse({{ partial "view-models/index.json" . }})
+  </script>
+{{ end }}

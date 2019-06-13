@@ -100,4 +100,12 @@ globals =
         , Global.selector ".page--visible, .layout--visible"
             [ opacity (num 1)
             ]
+        , Global.class "layout"
+            [ displayFlex
+            , flexDirection column
+            , minHeight (pct 100)
+            ]
+        , Global.class "page"
+            [ property "flex" "1 0 auto"
+            ]
         ]

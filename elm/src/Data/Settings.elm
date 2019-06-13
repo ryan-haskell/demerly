@@ -24,8 +24,8 @@ type alias Logos =
 
 type alias LinkLabels =
     { projects : String
-    , profile : String
     , process : String
+    , profile : String
     , contact : String
     }
 
@@ -63,8 +63,8 @@ linkLabelsDecoder : Decoder LinkLabels
 linkLabelsDecoder =
     D.map4 LinkLabels
         (D.field "projects" D.string)
-        (D.field "profile" D.string)
         (D.field "process" D.string)
+        (D.field "profile" D.string)
         (D.field "contact" D.string)
 
 
