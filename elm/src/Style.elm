@@ -128,5 +128,6 @@ globals =
         , Global.button
             [ backgroundColor (rgba 0 0 0 0)
             , border zero
+            , padding zero
             ]
         ]

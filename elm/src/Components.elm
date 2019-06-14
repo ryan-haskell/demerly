@@ -69,6 +69,7 @@ navbar settings onMenuClick context =
                     , button
                         [ onClick onMenuClick
                         , attribute "aria-label" "Toggle Menu"
+                        , css [ padding Style.spacing.tiny ]
                         ]
                         [ menuIcon context
                         ]
@@ -174,6 +175,7 @@ mainMenu settings context =
             , bottom zero
             , left zero
             , right zero
+            , zIndex (int 1)
             , backgroundColor Style.colors.milk
             , displayFlex
             , flexDirection column
@@ -182,18 +184,23 @@ mainMenu settings context =
             , Transitions.transition [ Transitions.opacity 200, Transitions.visibility 200 ]
             ]
         ]
-        (let
-            { projects, process, profile, contact } =
-                settings.header.linkLabels
-         in
-         List.map
+        (List.map
             (mainMenuLink context)
-            [ ( projects, "/projects" )
-            , ( process, "/process" )
-            , ( profile, "/profile" )
-            , ( contact, "/contact" )
-            ]
+            (links settings)
         )
+
+
+links : Settings -> List ( String, String )
+links settings =
+    let
+        { projects, process, profile, contact } =
+            settings.header.linkLabels
+    in
+    [ ( projects, "/projects" )
+    , ( process, "/process" )
+    , ( profile, "/profile" )
+    , ( contact, "/contact" )
+    ]
 
 
 siteFooter : Settings -> Html msg
