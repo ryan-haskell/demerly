@@ -38,10 +38,34 @@ view : Content -> Document msg
 view content =
     { title = title content
     , body =
-        [ main_ []
+        [ main_
+            [ css Style.styles.container
+            , css
+                [ position relative
+                , Style.breakpoints.desktop
+                    [ paddingBottom zero
+                    , height (calc (vh 100) minus (px (115 + 90)))
+                    ]
+                ]
+            ]
             [ optionally profileSnapshot content.page.image
-            , profileDeets content
-            , viewBio content.page.bio
+            , div
+                [ css
+                    [ Style.breakpoints.desktop
+                        [ position absolute
+                        , top zero
+                        , left zero
+                        , bottom zero
+                        , right zero
+                        , overflow auto
+                        ]
+                    ]
+                ]
+                [ div [ css [ maxWidth (ch 60) ] ]
+                    [ profileDeets content
+                    , viewBio content.page.bio
+                    ]
+                ]
             ]
         ]
     }
@@ -58,7 +82,8 @@ profileSnapshot photo =
             , height zero
             , paddingBottom (pct 100)
             , Style.breakpoints.desktop
-                [ paddingBottom (pct 60)
+                [ paddingBottom zero
+                , height (pct 100)
                 ]
             ]
         ]

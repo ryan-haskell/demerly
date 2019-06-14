@@ -16,44 +16,63 @@ import Route exposing (Route)
 import Style
 
 
-navbarHeight =
-    px 115
-
-
 navbar : Settings -> msg -> Context.Model -> Html msg
 navbar settings onMenuClick context =
     header
         [ css
-            [ height navbarHeight ]
+            [ height Style.sizes.navbarHeight ]
         ]
         [ div
             [ css
-                [ height navbarHeight
+                [ height Style.sizes.navbarHeight
                 , position fixed
                 , left zero
                 , right zero
                 , top zero
                 , backgroundColor (rgb 255 255 255)
-                , displayFlex
-                , padding2 Style.spacing.tiny Style.spacing.small
-                , justifyContent spaceBetween
-                , alignItems center
                 , zIndex (int 2)
-                , boxShadow4 zero (px 1) (px 16) (rgba 0 0 0 0.05)
+                , padding2 Style.spacing.tiny Style.spacing.small
                 ]
             ]
-            [ a [ href "/" ]
-                [ img
-                    [ src settings.header.logos.mobile
-                    , alt settings.header.brand
+            [ div
+                [ css Style.styles.container
+                , css
+                    [ height (pct 100)
                     ]
-                    []
                 ]
-            , button
-                [ onClick onMenuClick
-                , attribute "aria-label" "Toggle Menu"
-                ]
-                [ menuIcon context
+                [ div
+                    [ css
+                        [ displayFlex
+                        , justifyContent spaceBetween
+                        , alignItems center
+                        , height (pct 100)
+                        ]
+                    ]
+                    [ a
+                        [ href "/" ]
+                        [ img
+                            [ src settings.header.logos.mobile
+                            , alt settings.header.brand
+                            , css [ Style.breakpoints.desktop [ display none ] ]
+                            ]
+                            []
+                        , img
+                            [ src settings.header.logos.desktop
+                            , alt settings.header.brand
+                            , css
+                                [ display none
+                                , Style.breakpoints.desktop [ display block ]
+                                ]
+                            ]
+                            []
+                        ]
+                    , button
+                        [ onClick onMenuClick
+                        , attribute "aria-label" "Toggle Menu"
+                        ]
+                        [ menuIcon context
+                        ]
+                    ]
                 ]
             ]
         ]

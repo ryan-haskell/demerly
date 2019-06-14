@@ -2,7 +2,9 @@ module Style exposing
     ( breakpoints
     , colors
     , globals
+    , sizes
     , spacing
+    , styles
     , typography
     )
 
@@ -25,6 +27,21 @@ spacing =
     , medium = px 48
     , large = px 64
     , extraLarge = px 96
+    }
+
+
+sizes =
+    { navbarHeight = px 115
+    , containerWidth = px 1280
+    }
+
+
+styles =
+    { container =
+        [ width (pct 100)
+        , maxWidth sizes.containerWidth
+        , margin2 zero auto
+        ]
     }
 
 
@@ -75,8 +92,7 @@ typography =
 globals =
     Global.global
         [ Global.selector "body"
-            [ backgroundColor (rgb 225 225 225)
-            , color (rgb 74 74 74)
+            [ color (rgb 74 74 74)
             , fontFamilies [ "Barlow", "sans-serif" ]
             ]
         , Global.selector "html, body, [data-elm-hot]"
@@ -107,5 +123,10 @@ globals =
             ]
         , Global.class "page"
             [ property "flex" "1 0 auto"
+            , height (pct 100)
+            ]
+        , Global.button
+            [ backgroundColor (rgba 0 0 0 0)
+            , border zero
             ]
         ]
