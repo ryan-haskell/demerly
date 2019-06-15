@@ -32,7 +32,7 @@ spacing =
 
 sizes =
     { navbarHeight = px 115
-    , containerWidth = px 1280
+    , containerWidth = px 1440
     }
 
 
@@ -56,7 +56,7 @@ above px_ =
 
 
 breakpoints =
-    { desktop = above 480
+    { desktop = above 720
     }
 
 
@@ -129,5 +129,8 @@ globals =
             [ backgroundColor (rgba 0 0 0 0)
             , border zero
             , padding zero
+            ]
+        , Global.a
+            [ color inherit
             ]
         ]

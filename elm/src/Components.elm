@@ -16,6 +16,10 @@ import Route exposing (Route)
 import Style
 
 
+
+-- NAVBAR
+
+
 navbar : Settings -> msg -> Context.Model -> Html msg
 navbar settings onMenuClick context =
     header
@@ -69,14 +73,45 @@ navbar settings onMenuClick context =
                     , button
                         [ onClick onMenuClick
                         , attribute "aria-label" "Toggle Menu"
-                        , css [ padding Style.spacing.tiny ]
+                        , css
+                            [ padding Style.spacing.tiny
+                            , Style.breakpoints.desktop
+                                [ display none
+                                ]
+                            ]
                         ]
                         [ menuIcon context
                         ]
+                    , viewNavbarLinks context settings
                     ]
                 ]
             ]
         ]
+
+
+viewNavbarLinks : Context.Model -> Settings -> Html msg
+viewNavbarLinks context settings =
+    div
+        [ css
+            [ display none
+            , Style.breakpoints.desktop [ displayFlex ]
+            ]
+        ]
+        (List.map
+            (viewNavbarLink context)
+            (links settings)
+        )
+
+
+viewNavbarLink : Context.Model -> ( String, String ) -> Html msg
+viewNavbarLink context ( label, url ) =
+    a
+        [ href url
+        , css linkStyles
+        , css (linkLineEffect (String.contains url (Route.toString context.route)))
+        , css [ marginLeft Style.spacing.small ]
+        ]
+        [ text label ]
 
 
 menuIcon : Context.Model -> Html msg
@@ -98,58 +133,39 @@ menuIcon context =
     img [ src iconToShow, attribute "aria-hidden" "true" ] []
 
 
-type alias Link =
-    { label : String
-    , url : String
-    }
+
+-- MOBILE MENU
 
 
 mainMenuLink : Context.Model -> ( String, String ) -> Html msg
 mainMenuLink context ( label, url ) =
     let
-        activeStyles =
-            [ before
-                [ transform none
-                ]
-            ]
-
         isActive =
             String.contains url (Route.toString context.route)
     in
     a
         [ href url
+        , css linkStyles
+        , css (linkLineEffect isActive)
         , css
-            ([ fontSize (px 32)
-             , textTransform uppercase
-             , fontWeight (int 600)
-             , letterSpacing (px 1.78)
-             , fontFamilies [ "Barlow", "sans-serif" ]
-             , textDecoration none
-             , marginBottom (px 16)
-             , color inherit
-             , position relative
-             , before
-                [ Css.property "content" "''"
-                , position absolute
-                , left (px -8)
-                , top (pct 50)
-                , right (px -8)
-                , borderTop3 (px 1) solid (rgb 0 0 0)
-                , transform (scaleX 0.0)
-                , Css.property "transform-origin" "0 0"
-                , Transitions.transition [ Transitions.transform 300 ]
-                ]
-             , hover activeStyles
-             ]
-                ++ (if isActive then
-                        activeStyles
-
-                    else
-                        []
-                   )
-            )
+            [ marginBottom (px 16)
+            ]
         ]
         [ text label ]
+
+
+linkStyles =
+    [ textDecoration none
+    , fontSize (px 32)
+    , textTransform uppercase
+    , fontWeight (int 600)
+    , letterSpacing (px 1.78)
+    , fontFamilies [ "Barlow", "sans-serif" ]
+    , Style.breakpoints.desktop
+        [ fontSize (px 18)
+        , letterSpacing (px 1)
+        ]
+    ]
 
 
 mainMenu : Settings -> Context.Model -> Html msg
@@ -182,6 +198,9 @@ mainMenu settings context =
             , alignItems center
             , justifyContent center
             , Transitions.transition [ Transitions.opacity 200, Transitions.visibility 200 ]
+            , Style.breakpoints.desktop
+                [ display none
+                ]
             ]
         ]
         (List.map
@@ -201,6 +220,33 @@ links settings =
     , ( profile, "/profile" )
     , ( contact, "/contact" )
     ]
+
+
+linkLineEffect isActive =
+    [ position relative
+    , before
+        [ Css.property "content" "''"
+        , position absolute
+        , left (px -8)
+        , top (pct 50)
+        , right (px -8)
+        , borderTop3 (px 1) solid (rgb 0 0 0)
+        , transform (scaleX 0.0)
+        , Css.property "transform-origin" "0 0"
+        , Transitions.transition [ Transitions.transform 300 ]
+        ]
+    , hover [ before [ transform none ] ]
+    ]
+        ++ (if isActive then
+                [ before [ transform none ] ]
+
+            else
+                []
+           )
+
+
+
+-- FOOTER
 
 
 siteFooter : Settings -> Html msg

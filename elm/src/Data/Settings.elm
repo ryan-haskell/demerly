@@ -85,7 +85,7 @@ fallback =
     Settings
         (Header
             "Demerly Architects"
-            (Logos "/images/logo-mobile.svg" "/images/logo-desktop.svg")
+            (Logos "/images/logo-mobile.svg" "/images/logo-desktop.png")
             (LinkLabels "Projects" "Process" "Profile" "Contact")
         )
         (Footer

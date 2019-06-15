@@ -11,12 +11,9 @@ type Content
     | ProfileDetail Settings ProfileDetail
 
 
-
--- TODO: Remember the order matters!
-
-
 decoder : Decoder Content
 decoder =
+    -- Remember: the order matters!
     D.oneOf
         [ page ProfileDetail Data.ProfileDetail.decoder
         , page Homepage Data.Homepage.decoder
@@ -24,7 +21,7 @@ decoder =
 
 
 page : (Settings -> a -> b) -> Decoder a -> Decoder b
-page ctr decoder_ =
+page ctr pageDecoder =
     D.map2 ctr
         (D.field "settings" Data.Settings.decoder)
-        (D.field "page" decoder_)
+        (D.field "page" pageDecoder)

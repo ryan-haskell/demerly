@@ -2,7 +2,7 @@ header:
   brand: Demerly Architects
   logos:
     mobile: /images/logo-mobile.svg
-    desktop: /images/logo-desktop.svg
+    desktop: /images/logo-desktop.png
   linkLabels:
     projects: Projects
     process: Process
