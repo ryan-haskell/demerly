@@ -81,18 +81,22 @@ view content model =
 
 
 viewTypeFilterButton : Maybe String -> String -> Html Msg
-viewTypeFilterButton selectedOption label_ =
+viewTypeFilterButton typeFilter label_ =
     button
         [ css
             [ marginRight Style.spacing.tiny
             , border2 (px 1) solid
             , padding2 (px 8) (px 16)
-            , if selectedOption == Just label_ then
-                color (rgb 150 0 200)
-
-              else
-                color inherit
             ]
+        , css
+            (if typeFilter == Just label_ then
+                [ color (rgb 97 81 111)
+                , borderColor (rgb 97 81 111)
+                ]
+
+             else
+                []
+            )
         , onClick (SetTypeFilter label_)
         ]
         [ text label_ ]
