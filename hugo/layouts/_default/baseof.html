@@ -7,7 +7,10 @@
   <link rel="icon" href="/favicon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
   <link href="https://fonts.googleapis.com/css?family=Barlow:400,600,700|Frank+Ruhl+Libre&display=swap" rel="stylesheet">
-  {{ block "head" . }}{{ end }}
+  <title>{{ .Title }}</title>
+  <meta name="description" content="{{ .Params.description }}">
+  <meta name="og:description" content="{{ .Params.description }}">
+  <meta name="og:image" content="{{ .Params.image }}">
 </head>
 <body>  
   <div id="app"></div>

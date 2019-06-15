@@ -1,1 +1,1 @@
-{{ partial "view-models/index.json" . }}
+{{ partial "index.json" . }}

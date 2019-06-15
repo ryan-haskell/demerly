@@ -1,12 +1,5 @@
-{{ define "head" }}
-  <title>{{ .Title }}</title>
-  <meta name="description" content="{{ .Params.description }}">
-  <meta name="og:description" content="{{ .Params.description }}">
-  <meta name="og:image" content="{{ .Params.image }}">
-{{ end }}
-
 {{ define "scripts" }}
   <script>
-    window.__FLAGS__ = JSON.parse({{ partial "view-models/index.json" . }})
+    window.__FLAGS__ = JSON.parse({{ partial "index.json" . }})
   </script>
 {{ end }}

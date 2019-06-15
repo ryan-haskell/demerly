@@ -1,0 +1,5 @@
+{{ define "scripts" }}
+  <script>
+    window.__FLAGS__ = JSON.parse({{ partial "process/list.json" . }})
+  </script>
+{{ end }}

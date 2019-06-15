@@ -12,9 +12,14 @@ import Html.Styled.Attributes exposing (class, classList, css)
 import Http
 import Json.Decode as D
 import Json.Encode as Json
+import Page.ContactLanding
 import Page.Homepage
 import Page.NotFound
+import Page.ProcessLanding
 import Page.ProfileDetail
+import Page.ProfileLanding
+import Page.ProjectsDetail
+import Page.ProjectsLanding
 import Process
 import Route exposing (Route)
 import Style
@@ -53,7 +58,12 @@ isPageVisible t =
 
 type Page
     = Homepage Page.Homepage.Content
+    | ProjectsLanding Page.ProjectsLanding.Content Page.ProjectsLanding.Model
+    | ProjectsDetail Page.ProjectsDetail.Content
+    | ProcessLanding Page.ProcessLanding.Content
+    | ProfileLanding Page.ProfileLanding.Content
     | ProfileDetail Page.ProfileDetail.Content
+    | ContactLanding Page.ContactLanding.Content
     | NotFound
     | BadJson String
 
@@ -65,6 +75,7 @@ type Msg
     | AppReceivedContent Url (Result Http.Error Content)
     | AppNavigatedTo Url (Result Http.Error Content)
     | SetTransition Transition
+    | ProjectsLandingSentMsg Page.ProjectsLanding.Msg
 
 
 main : Program Json.Value Model Msg
@@ -122,6 +133,32 @@ initPage route content =
         ( Route.Homepage, _ ) ->
             NotFound
 
+        ( Route.ProjectsLanding, Content.OnlySettings settings ) ->
+            ProjectsLanding
+                (Page.ProjectsLanding.Content settings)
+                Page.ProjectsLanding.init
+
+        ( Route.ProjectsLanding, _ ) ->
+            NotFound
+
+        ( Route.ProjectsDetail _, Content.OnlySettings settings ) ->
+            ProjectsDetail
+                (Page.ProjectsDetail.Content settings)
+
+        ( Route.ProjectsDetail _, _ ) ->
+            NotFound
+
+        ( Route.ProcessLanding, Content.OnlySettings settings ) ->
+            ProcessLanding
+                (Page.ProcessLanding.Content settings)
+
+        ( Route.ProcessLanding, _ ) ->
+            NotFound
+
+        ( Route.ProfileLanding, Content.OnlySettings settings ) ->
+            ProfileLanding
+                (Page.ProfileLanding.Content settings)
+
         ( Route.ProfileLanding, _ ) ->
             NotFound
 
@@ -133,6 +170,13 @@ initPage route content =
                 )
 
         ( Route.ProfileDetail _, _ ) ->
+            NotFound
+
+        ( Route.ContactLanding, Content.OnlySettings settings ) ->
+            ContactLanding
+                (Page.ContactLanding.Content settings)
+
+        ( Route.ContactLanding, _ ) ->
             NotFound
 
         ( Route.NotFound, _ ) ->
@@ -192,6 +236,20 @@ update msg model =
 
         SetTransition transition ->
             ( { model | transition = transition }
+            , Cmd.none
+            )
+
+        ProjectsLandingSentMsg msg_ ->
+            ( case model.page of
+                ProjectsLanding content model_ ->
+                    { model
+                        | page =
+                            ProjectsLanding content
+                                (Page.ProjectsLanding.update msg_ model_)
+                    }
+
+                _ ->
+                    model
             , Cmd.none
             )
 
@@ -273,13 +331,13 @@ view model =
 viewPage : Model -> ( Document Msg, Settings )
 viewPage { page } =
     case page of
-        Homepage content ->
-            ( Page.Homepage.view content
+        ContactLanding content ->
+            ( Page.ContactLanding.view
             , content.settings
             )
 
-        ProfileDetail content ->
-            ( Page.ProfileDetail.view content
+        Homepage content ->
+            ( Page.Homepage.view content
             , content.settings
             )
 
@@ -288,8 +346,36 @@ viewPage { page } =
             , Settings.fallback
             )
 
+        ProcessLanding content ->
+            ( Page.ProcessLanding.view
+            , content.settings
+            )
+
+        ProfileDetail content ->
+            ( Page.ProfileDetail.view content
+            , content.settings
+            )
+
+        ProfileLanding content ->
+            ( Page.ProfileLanding.view
+            , content.settings
+            )
+
+        ProjectsLanding content model ->
+            ( Page.ProjectsLanding.view content model
+                |> Document.map ProjectsLandingSentMsg
+            , content.settings
+            )
+
+        ProjectsDetail content ->
+            ( Page.ProjectsDetail.view
+            , content.settings
+            )
+
         BadJson reason ->
-            ( Page.NotFound.view
+            ( { title = "Oops | Demerly Architects"
+              , body = [ text reason ]
+              }
             , Settings.fallback
             )
 

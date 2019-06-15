@@ -1,0 +1,4 @@
+{
+  "settings": {{ .Site.Data.settings | jsonify }},
+  "page": {}
+}

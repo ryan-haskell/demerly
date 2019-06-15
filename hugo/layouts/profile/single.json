@@ -1,1 +1,1 @@
-{{ partial "view-models/profile/single.json" . }}
+{{ partial "profile/single.json" . }}

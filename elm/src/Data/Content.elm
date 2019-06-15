@@ -9,6 +9,7 @@ import Json.Decode as D exposing (Decoder)
 type Content
     = Homepage Settings Homepage
     | ProfileDetail Settings ProfileDetail
+    | OnlySettings Settings
 
 
 decoder : Decoder Content
@@ -17,6 +18,8 @@ decoder =
     D.oneOf
         [ page ProfileDetail Data.ProfileDetail.decoder
         , page Homepage Data.Homepage.decoder
+        , D.map OnlySettings
+            (D.field "settings" Data.Settings.decoder)
         ]
 
 

@@ -1,0 +1,5 @@
+{{ define "scripts" }}
+  <script>
+    window.__FLAGS__ = JSON.parse({{ partial "profile/list.json" . }})
+  </script>
+{{ end }}

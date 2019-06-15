@@ -10,8 +10,12 @@ import Url.Parser as Parser exposing ((</>), Parser, s, string, top)
 
 type Route
     = Homepage
+    | ProjectsLanding
+    | ProjectsDetail String
+    | ProcessLanding
     | ProfileLanding
     | ProfileDetail String
+    | ContactLanding
     | NotFound
 
 
@@ -19,8 +23,12 @@ router : Parser (Route -> a) a
 router =
     Parser.oneOf
         [ Parser.map Homepage top
+        , Parser.map ProjectsLanding (s "projects")
+        , Parser.map ProjectsDetail (s "projects" </> string)
+        , Parser.map ProcessLanding (s "process")
         , Parser.map ProfileLanding (s "profile")
         , Parser.map ProfileDetail (s "profile" </> string)
+        , Parser.map ContactLanding (s "contact")
         ]
 
 
@@ -35,11 +43,23 @@ toString route =
         Homepage ->
             "/"
 
+        ProjectsLanding ->
+            "/projects"
+
+        ProjectsDetail slug ->
+            "/projects/" ++ slug
+
+        ProcessLanding ->
+            "/process"
+
         ProfileLanding ->
             "/profile"
 
         ProfileDetail slug ->
             "/profile/" ++ slug
+
+        ContactLanding ->
+            "/contact"
 
         NotFound ->
             "/not-found"
