@@ -257,23 +257,31 @@ siteFooter settings =
             , backgroundColor (rgb 255 255 255)
             ]
         ]
-        [ address
-            [ css
-                [ displayFlex
-                , fontStyle normal
-                , flexDirection rowReverse
-                , flexWrap wrap
+        [ div [ css Style.styles.container ]
+            [ address
+                [ css
+                    [ displayFlex
+                    , fontStyle normal
+                    , justifyContent flexEnd
+                    , flexWrap wrap
+                    ]
                 ]
-            ]
-            [ p [ css [ marginBottom zero ] ] [ text settings.footer.address ]
-            , p []
-                [ span
+                [ p
                     [ css
-                        [ marginRight (rem 1)
+                        [ marginBottom zero
+                        , marginRight Style.spacing.small
                         ]
                     ]
-                    [ text ("P - " ++ settings.footer.phone) ]
-                , span [] [ text ("F - " ++ settings.footer.fax) ]
+                    [ text settings.footer.address ]
+                , p []
+                    [ span
+                        [ css
+                            [ marginRight (rem 1)
+                            ]
+                        ]
+                        [ text ("P - " ++ settings.footer.phone) ]
+                    , span [] [ text ("F - " ++ settings.footer.fax) ]
+                    ]
                 ]
             ]
         ]
