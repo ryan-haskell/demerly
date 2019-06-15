@@ -85,6 +85,7 @@ viewTypeFilterButton typeFilter label_ =
     button
         [ css
             [ marginRight Style.spacing.tiny
+            , marginBottom Style.spacing.tiny
             , border2 (px 1) solid
             , padding2 (px 8) (px 16)
             ]
