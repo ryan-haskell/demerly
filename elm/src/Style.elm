@@ -95,6 +95,17 @@ typography =
         , fontWeight (int 600)
         , textTransform uppercase
         ]
+    , highlightTitle =
+        [ fontSize (px 18)
+        , lineHeight (px 21)
+        , letterSpacing (px 1)
+        , fontFamilies families.heading
+        , fontWeight (int 600)
+        , breakpoints.desktop
+            [ fontSize (px 20)
+            , lineHeight (px 24)
+            ]
+        ]
     }
 
 
@@ -137,6 +148,7 @@ globals =
         , Global.button
             [ backgroundColor (rgba 0 0 0 0)
             , border zero
+            , borderRadius zero
             , padding zero
             ]
         , Global.a
