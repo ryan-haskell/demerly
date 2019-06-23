@@ -48,7 +48,7 @@ photoRatio =
 profileCard : Html msg
 profileCard =
     a
-        [ href "#0"
+        [ href "/profile/mark-demerly"
         , css
             [ textDecoration none
             , display block
