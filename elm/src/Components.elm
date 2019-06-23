@@ -24,7 +24,10 @@ navbar : Settings -> msg -> Context.Model -> Html msg
 navbar settings onMenuClick context =
     header
         [ css
-            [ height Style.sizes.navbarHeight ]
+            [ height Style.sizes.navbarHeight 
+            , position relative
+            , zIndex (int 3)
+            ]
         ]
         [ div
             [ css
@@ -191,7 +194,7 @@ mainMenu settings context =
             , bottom zero
             , left zero
             , right zero
-            , zIndex (int 1)
+            , zIndex (int 2)
             , backgroundColor Style.colors.milk
             , displayFlex
             , flexDirection column

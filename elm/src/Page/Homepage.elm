@@ -19,16 +19,54 @@ view : Content -> Document msg
 view content =
     { title = "Demerly Architects"
     , body =
-        [ div
-            [ css Style.styles.container
-            , css [ padding2 zero Style.spacing.small ]
-            ]
-            [ h1 [] [ text "Pages" ]
-            , ul []
-                [ li []
-                    [ a [ Attr.href "/profile/mark-demerly" ] [ text "Profile Detail - Mark Demerly" ]
-                    ]
-                ]
-            ]
+        [ viewSlides content.page
         ]
     }
+
+
+viewSlides : Page.Homepage -> Html msg
+viewSlides page =
+    div
+        [ css
+            []
+        ]
+        (List.map viewSlide page.slides)
+
+
+viewSlide : Page.Slide -> Html msg
+viewSlide slide =
+    div
+        [ css
+            [ height (vh 70)
+            , position relative
+            , backgroundColor Style.colors.dark
+            , color Style.colors.white
+            , backgroundPosition center
+            , backgroundSize cover
+            , backgroundImage (url slide.image)
+            ]
+        ]
+        [ div
+            [ css
+                [ position absolute
+                , top zero
+                , left zero
+                , right zero
+                , bottom zero
+                , zIndex (int 1)
+                , backgroundImage
+                    (linearGradient2 toBottom (stop (rgba 0 0 0 0)) (stop (rgba 0 0 0 0.7)) [])
+                ]
+            ]
+            []
+        , div
+            [ css
+                [ position absolute
+                , bottom (rem 1)
+                , left (rem 1)
+                , zIndex (int 2)
+                ]
+            , css Style.typography.link
+            ]
+            [ text slide.title ]
+        ]

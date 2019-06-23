@@ -18,6 +18,7 @@ colors =
     { milk = rgba 255 255 255 0.95
     , dark = rgb 74 74 74
     , charcoal = rgb 151 151 151
+    , white = rgb 255 255 255
     }
 
 
@@ -85,6 +86,14 @@ typography =
             , lineHeight (px 22)
             , letterSpacing (px 0.9)
             ]
+        ]
+    , link =
+        [ fontSize (px 20)
+        , lineHeight (px 24)
+        , letterSpacing (px 1)
+        , fontFamilies families.heading
+        , fontWeight (int 600)
+        , textTransform uppercase
         ]
     }
 

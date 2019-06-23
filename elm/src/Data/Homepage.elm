@@ -1,14 +1,33 @@
-module Data.Homepage exposing (Homepage, decoder)
+module Data.Homepage exposing (Homepage, Slide, decoder)
 
 import Json.Decode as D exposing (Decoder)
 
 
 type alias Homepage =
-    { name : String
+    { slides : List Slide
+    }
+
+
+type alias Slide =
+    { title : String
+
+    -- , url : String
+    , image : String
     }
 
 
 decoder : Decoder Homepage
 decoder =
     D.map Homepage
-        (D.field "name" D.string)
+        (D.field "slides" (D.list slideDecoder))
+
+
+slideDecoder : Decoder Slide
+slideDecoder =
+    D.map2 Slide
+        (D.field "title" D.string)
+        (D.field "image" D.string)
+
+
+
+-- (D.field "url" D.string)
