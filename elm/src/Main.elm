@@ -86,7 +86,7 @@ main =
         { init = init
         , update = update
         , view = view >> toUnstyled
-        , subscriptions = always Sub.none
+        , subscriptions = subscriptions
         , onUrlRequest = UserClickedLink
         , onUrlChange = BrowserChangedUrl
         }
