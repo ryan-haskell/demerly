@@ -6,6 +6,7 @@ module Style exposing
     , spacing
     , styles
     , typography
+    , widths
     )
 
 import Css exposing (..)
@@ -31,9 +32,21 @@ spacing =
     }
 
 
+heights =
+    { navbar = 115
+    , footer = 90
+    }
+
+
+widths =
+    { container = 1440
+    }
+
+
 sizes =
-    { navbarHeight = px 115
-    , containerWidth = px 1440
+    { navbarHeight = px heights.navbar
+    , containerWidth = px widths.container
+    , pageHeight = calc (vh 100) minus (px (heights.navbar + heights.footer))
     }
 
 
@@ -153,5 +166,11 @@ globals =
             ]
         , Global.a
             [ color inherit
+            ]
+        , Global.selector ".homepage__slide:hover .homepage__gradient"
+            [ opacity (num 1)
+            ]
+        , Global.selector ".homepage__slide:hover .homepage__content"
+            [ transform none
             ]
         ]

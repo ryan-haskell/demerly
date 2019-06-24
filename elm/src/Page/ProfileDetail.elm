@@ -44,7 +44,7 @@ view content =
                 [ position relative
                 , Style.breakpoints.desktop
                     [ paddingBottom zero
-                    , height (calc (vh 100) minus (px (115 + 90)))
+                    , height Style.sizes.pageHeight
                     ]
                 ]
             ]

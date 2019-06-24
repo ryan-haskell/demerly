@@ -3,6 +3,8 @@ module Main exposing (main)
 import Application.Context as Context
 import Application.Document as Document exposing (Document)
 import Browser exposing (UrlRequest(..))
+import Browser.Dom
+import Browser.Events
 import Browser.Navigation as Nav
 import Components
 import Data.Content as Content exposing (Content)
@@ -97,7 +99,18 @@ main =
 init : Json.Value -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init json url key =
     ( initModel json url key
-    , delay pageTransitionSpeed (SetTransition PageReady)
+    , Cmd.batch
+        [ Browser.Dom.getViewport
+            |> Task.perform
+                (\{ viewport } ->
+                    ContextSentMsg
+                        (Context.SetViewport
+                            (floor viewport.width)
+                            (floor viewport.height)
+                        )
+                )
+        , delay pageTransitionSpeed (SetTransition PageReady)
+        ]
     )
 
 
@@ -329,7 +342,7 @@ view model =
 
 
 viewPage : Model -> ( Document Msg, Settings )
-viewPage { page } =
+viewPage { page, context } =
     case page of
         ContactLanding content ->
             ( Page.ContactLanding.view
@@ -337,7 +350,7 @@ viewPage { page } =
             )
 
         Homepage content ->
-            ( Page.Homepage.view content
+            ( Page.Homepage.view context content
             , content.settings
             )
 
@@ -382,4 +395,5 @@ viewPage { page } =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    Browser.Events.onResize
+        (\w h -> ContextSentMsg (Context.SetViewport w h))

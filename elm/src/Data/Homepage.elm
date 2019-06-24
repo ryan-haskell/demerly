@@ -10,9 +10,9 @@ type alias Homepage =
 
 type alias Slide =
     { title : String
-
-    -- , url : String
+    , slug : String
     , image : String
+    , details : String
     }
 
 
@@ -24,10 +24,8 @@ decoder =
 
 slideDecoder : Decoder Slide
 slideDecoder =
-    D.map2 Slide
+    D.map4 Slide
         (D.field "title" D.string)
+        (D.field "slug" D.string)
         (D.field "image" D.string)
-
-
-
--- (D.field "url" D.string)
+        (D.field "details" D.string)
