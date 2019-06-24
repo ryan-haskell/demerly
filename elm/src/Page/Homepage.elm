@@ -51,7 +51,8 @@ viewSlide slide =
         [ class "homepage__slide"
         , href ("/projects/" ++ slide.slug)
         , css
-            [ height (vh 70)
+            [ display block
+            , height (vh 70)
             , position relative
             , backgroundColor Style.colors.dark
             , color Style.colors.white
