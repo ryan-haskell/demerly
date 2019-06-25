@@ -4,47 +4,74 @@ hide_body: true
 fields:
 - type: field_group
   name: header
-  label: header
+  label: Header
   fields:
   - type: text
     name: brand
-    label: brand
+    label: Site Name
+    description: Ex. Demerly Architects
+    default: Demerly Architects
   - type: field_group
     name: logos
-    label: logos
+    label: Logo Images
     fields:
     - type: file
       name: mobile
-      label: mobile
+      label: Mobile Logo
     - type: file
       name: desktop
-      label: desktop
+      label: Desktop Logo
   - type: field_group
     name: linkLabels
-    label: linkLabels
+    label: Link Labels
     fields:
     - type: text
       name: projects
-      label: projects
+      label: Projects
+      config:
+        required: true
+      default: Projects
     - type: text
       name: process
-      label: process
+      label: Process
+      default: Process
+      config:
+        required: true
     - type: text
       name: profile
-      label: profile
+      label: Profile
+      config:
+        required: true
+      default: Profile
     - type: text
       name: contact
-      label: contact
+      label: Contact
+      config:
+        required: true
+      default: Contact
+  description: The navigation bar across the top of the site.
 - type: field_group
   name: footer
-  label: footer
+  label: Footer
   fields:
   - type: text
     name: address
-    label: address
+    label: Address
+    description: Ex. 6500 Westfield Boulevard / Indianapolis, IN 46220
+    default: 6500 Westfield Boulevard / Indianapolis, IN 46220
+    config:
+      required: true
   - type: text
     name: phone
-    label: phone
+    label: Phone
+    description: 'Please follow format: XXX.XXX.XXXX'
+    config:
+      required: true
+    default: 317.847.0724
   - type: text
     name: fax
-    label: fax
+    label: Fax Number
+    default: 317.847.0724
+    config:
+      required: true
+    description: 'Please follow format: XXX.XXX.XXXX'
