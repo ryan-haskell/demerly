@@ -15,6 +15,8 @@ sections:
   create: all
   match: "**/*"
   exclude: "*_index.md"
+  templates:
+  - project
 - type: heading
   label: Profile
 - type: document
