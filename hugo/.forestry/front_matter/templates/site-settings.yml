@@ -9,7 +9,6 @@ fields:
   - type: text
     name: brand
     label: Site Name
-    description: Ex. Demerly Architects
     default: Demerly Architects
   - type: field_group
     name: logos
@@ -57,7 +56,6 @@ fields:
   - type: text
     name: address
     label: Address
-    description: Ex. 6500 Westfield Boulevard / Indianapolis, IN 46220
     default: 6500 Westfield Boulevard / Indianapolis, IN 46220
     config:
       required: true
