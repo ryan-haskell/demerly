@@ -4,19 +4,13 @@ hide_body: false
 fields:
 - type: text
   name: title
-  label: Tab Title
-  description: Mark Demerly | Profile | Demerly Architects
+  label: Name
   config:
     required: true
 - type: text
   name: description
   label: SEO Description
   description: A short, simple sentence describing the page.
-  config:
-    required: true
-- type: text
-  name: name
-  label: Full Name
   config:
     required: true
 - type: file
