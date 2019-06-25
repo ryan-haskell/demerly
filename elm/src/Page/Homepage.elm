@@ -49,7 +49,7 @@ viewSlide : Page.Slide -> Html msg
 viewSlide slide =
     a
         [ class "homepage__slide"
-        , href ("/projects/" ++ slide.slug)
+        , href slide.url
         , css
             [ display block
             , height (vh 70)

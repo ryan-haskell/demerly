@@ -1,6 +1,18 @@
+{{ $fn := .Site }}
 {
   "settings": {{ .Site.Data.settings | jsonify }},
   "page": {
-    "slides": {{ .Params.slides | jsonify }}
+    "slides": [
+      {{ range $i, $el := .Params.projects }}
+        {{ with $fn.GetPage $el.project }}
+          {{ if ne $i 0 }},{{ end }}
+          { "title": {{ .Title | jsonify }},
+            "details": {{ (printf "%d – %s, %s" .Params.Year (humanize (index (split .Path "/") 1)) .Params.Location) | jsonify }},
+            "image": {{ index .Params.images 0 | jsonify }},
+            "url": {{ printf "/%s" (strings.TrimRight ".md" .Path) | jsonify }}
+          }
+        {{ end }}
+      {{ end }}
+    ]
   }
 }

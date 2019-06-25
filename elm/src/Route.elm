@@ -24,7 +24,7 @@ router =
     Parser.oneOf
         [ Parser.map Homepage top
         , Parser.map ProjectsLanding (s "projects")
-        , Parser.map ProjectsDetail (s "projects" </> string)
+        , Parser.map (always ProjectsDetail) (s "projects" </> string </> string)
         , Parser.map ProcessLanding (s "process")
         , Parser.map ProfileLanding (s "profile")
         , Parser.map ProfileDetail (s "profile" </> string)

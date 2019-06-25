@@ -2,6 +2,7 @@ module Data.Content exposing (Content(..), decoder)
 
 import Data.Homepage exposing (Homepage)
 import Data.ProfileDetail exposing (ProfileDetail)
+import Data.ProjectDetail exposing (ProjectDetail)
 import Data.Settings exposing (Settings)
 import Json.Decode as D exposing (Decoder)
 
@@ -9,6 +10,7 @@ import Json.Decode as D exposing (Decoder)
 type Content
     = Homepage Settings Homepage
     | ProfileDetail Settings ProfileDetail
+    | ProjectDetail Settings ProjectDetail
     | OnlySettings Settings
 
 
@@ -17,6 +19,7 @@ decoder =
     -- Remember: the order matters!
     D.oneOf
         [ page ProfileDetail Data.ProfileDetail.decoder
+        , page ProjectDetail Data.ProjectDetail.decoder
         , page Homepage Data.Homepage.decoder
         , D.map OnlySettings
             (D.field "settings" Data.Settings.decoder)

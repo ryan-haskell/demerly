@@ -1,4 +1,11 @@
 {
   "settings": {{ .Site.Data.settings | jsonify }},
-  "page": {}
+  "page": {
+    "title": {{ .Title | jsonify }},
+    "type": {{ humanize (index (split .Path "/") 1) | jsonify }},
+    "images": {{ .Params.images | jsonify }},
+    "details": {{ .Params.details | jsonify }},
+    "year": {{ printf "%d" .Params.year | jsonify }},
+    "location": {{ .Params.location | jsonify }}
+  }
 }

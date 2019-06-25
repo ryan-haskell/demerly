@@ -154,9 +154,9 @@ initPage route content =
         ( Route.ProjectsLanding, _ ) ->
             NotFound
 
-        ( Route.ProjectsDetail _, Content.OnlySettings settings ) ->
+        ( Route.ProjectsDetail _, Content.ProjectDetail settings page ) ->
             ProjectsDetail
-                (Page.ProjectsDetail.Content settings)
+                (Page.ProjectsDetail.Content settings page)
 
         ( Route.ProjectsDetail _, _ ) ->
             NotFound
@@ -381,7 +381,7 @@ viewPage { page, context } =
             )
 
         ProjectsDetail content ->
-            ( Page.ProjectsDetail.view
+            ( Page.ProjectsDetail.view content
             , content.settings
             )
 
