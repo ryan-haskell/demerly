@@ -1,5 +1,5 @@
 ---
-name: 'Homepage '
+name: Homepage
 description: Homepage description
 slides:
 - title: Moeller House
