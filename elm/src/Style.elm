@@ -2,6 +2,8 @@ module Style exposing
     ( breakpoints
     , colors
     , globals
+    , grid
+    , listReset
     , sizes
     , spacing
     , styles
@@ -20,6 +22,7 @@ colors =
     , dark = rgb 74 74 74
     , charcoal = rgb 151 151 151
     , white = rgb 255 255 255
+    , purple = rgb 97 81 111
     }
 
 
@@ -74,6 +77,28 @@ breakpoints =
     }
 
 
+halfGridWidth =
+    calc (pct 50) minus spacing.medium
+
+
+grid =
+    { context =
+        [ breakpoints.desktop
+            [ displayFlex
+            , flexWrap wrap
+            ]
+        ]
+    , twoColumnList =
+        [ marginBottom spacing.tiny
+        , breakpoints.desktop
+            [ width halfGridWidth
+            , marginRight spacing.medium
+            , marginBottom spacing.medium
+            ]
+        ]
+    }
+
+
 typography =
     { title =
         [ fontSize (px 24)
@@ -106,7 +131,13 @@ typography =
         , letterSpacing (px 1)
         , fontFamilies families.heading
         , fontWeight (int 600)
-        , textTransform uppercase
+        ]
+    , smallLink =
+        [ letterSpacing (px 1)
+        , fontFamilies families.heading
+        , fontWeight (int 600)
+        , breakpoints.desktop
+            [ fontSize (px 18) ]
         ]
     , highlightTitle =
         [ fontSize (px 18)
@@ -114,12 +145,20 @@ typography =
         , letterSpacing (px 1)
         , fontFamilies families.heading
         , fontWeight (int 600)
+        , textTransform uppercase
         , breakpoints.desktop
             [ fontSize (px 20)
             , lineHeight (px 24)
             ]
         ]
     }
+
+
+listReset =
+    [ listStyle none
+    , paddingLeft zero
+    , margin zero
+    ]
 
 
 globals =

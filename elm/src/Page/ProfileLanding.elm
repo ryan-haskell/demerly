@@ -14,6 +14,29 @@ type alias Content =
     }
 
 
+type alias PersonRecord =
+    { href : String
+    , name : String
+    , profileImage : String
+    }
+
+
+names =
+    [ { href = "/profile/mark-demerly"
+      , name = "Mark Demerly"
+      , profileImage = "/images/photo-mark2.jpg"
+      }
+    , { href = "/profile/mark-demerly"
+      , name = "Mark Demerly2"
+      , profileImage = "/images/photo-mark2.jpg"
+      }
+    , { href = "/profile/mark-demerly"
+      , name = "Mark Demerly3"
+      , profileImage = "/images/photo-mark2.jpg"
+      }
+    ]
+
+
 view =
     { title = "Profile | Demerly Architects"
     , body =
@@ -23,7 +46,7 @@ view =
             ]
             [ h1 [ css Style.typography.title ] [ text "Profile Landing" ] ]
         , leadCopy
-        , profileCard
+        , profileList names
         ]
     }
 
@@ -45,27 +68,46 @@ photoRatio =
     photoDimensions.height / photoDimensions.width
 
 
-profileCard : Html msg
-profileCard =
+
+-- profileList : List -> Html msg
+
+
+profileList people =
+    ul
+        [ css (Style.listReset ++ Style.grid.context)
+        ]
+        (List.map listChild people)
+
+
+listChild personRecord_ =
+    li [ css Style.grid.twoColumnList ]
+        [ profileCard personRecord_ ]
+
+
+profileCard : PersonRecord -> Html msg
+profileCard person =
     a
-        [ href "/profile/mark-demerly"
+        [ href person.href
         , css
             [ textDecoration none
             , display block
             , backgroundSize cover
             , backgroundPosition2 (pct 100) zero
-            , backgroundImage (url "/images/photo-mark2.jpg")
+            , backgroundImage (url person.profileImage)
             , width (pct 100)
             , paddingBottom (pct (photoRatio * 100))
+            , position relative
             ]
         ]
         [ span
             [ css
-                [ position absolute
-                , left Style.spacing.small
-                , top Style.spacing.small
-                ]
+                ([ position absolute
+                 , left Style.spacing.small
+                 , top Style.spacing.small
+                 ]
+                    ++ Style.typography.highlightTitle
+                )
             ]
-            [ text "mark Demerly"
+            [ text person.name
             ]
         ]
