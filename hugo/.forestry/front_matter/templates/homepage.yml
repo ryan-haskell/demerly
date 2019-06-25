@@ -38,5 +38,25 @@ fields:
   label: Featured Projects
   config:
     labelField: title
+- name: projects
+  type: field_group_list
+  fields:
+  - name: project
+    type: select
+    default: []
+    config:
+      required: false
+      options: []
+      source:
+        type: pages
+        section: projects
+        file: 
+        path: 
+    label: Project
+  config:
+    min: 
+    max: 
+    labelField: 
+  label: Featured Projects
 pages:
 - hugo/content/_index.md
