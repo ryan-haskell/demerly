@@ -36,6 +36,7 @@ fields:
   label: Details
   description: A short, simple paragraph explaining the project.
 pages:
+- hugo/content/projects/Residential/gentili.md
 - hugo/content/projects/Residential/fr-house.md
 - hugo/content/projects/Renovation/pedigo-bay.md
 - hugo/content/projects/Commercial/moeller-house.md
