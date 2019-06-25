@@ -14,7 +14,6 @@ fields:
     required: true
 - type: field_group_list
   name: slides
-  label: slides
   fields:
   - type: text
     name: title
@@ -36,3 +35,6 @@ fields:
     label: Image
     description: Should be at least 1440 pixels wide. The image will always be centered,
       but the visible portion is based on user's screen size.
+  label: Featured Projects
+  config:
+    labelField: title
