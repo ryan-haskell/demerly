@@ -1,0 +1,31 @@
+---
+label: profile-detail
+hide_body: false
+fields:
+- type: text
+  name: title
+  label: title
+- type: text
+  name: description
+  label: description
+- type: text
+  name: name
+  label: name
+- type: file
+  name: image
+  label: image
+- type: text
+  name: email
+  label: email
+- type: text
+  name: credentials
+  label: credentials
+- type: text
+  name: position
+  label: position
+- type: text
+  name: phone
+  label: phone
+- type: text
+  name: fax
+  label: fax
