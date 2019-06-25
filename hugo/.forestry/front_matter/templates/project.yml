@@ -36,4 +36,5 @@ fields:
   label: Details
   description: A short, simple paragraph explaining the project.
 pages:
+- hugo/content/projects/Renovation/pedigo-bay.md
 - hugo/content/projects/Commercial/moeller-house.md
