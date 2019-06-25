@@ -20,7 +20,9 @@ slides:
   slug: gentili
   image: "/images/gentili.jpg"
 projects:
-- project: projects/Commercial/moeller-house.md
-- project: projects/Residential/gentili.md
+- project: projects/commercial/moeller-house.md
+- project: projects/residential/pedigo-bay.md
+- project: projects/residential/fr-house.md
+- project: projects/renovation/gentili.md
 
 ---
