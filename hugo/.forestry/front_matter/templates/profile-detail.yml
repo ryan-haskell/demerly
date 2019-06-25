@@ -4,28 +4,43 @@ hide_body: false
 fields:
 - type: text
   name: title
-  label: title
+  label: Tab Title
+  description: Mark Demerly | Profile | Demerly Architects
+  config:
+    required: true
 - type: text
   name: description
-  label: description
+  label: SEO Description
+  description: A short, simple sentence describing the page.
+  config:
+    required: true
 - type: text
   name: name
-  label: name
+  label: Full Name
+  config:
+    required: true
 - type: file
   name: image
-  label: image
-- type: text
-  name: email
-  label: email
+  label: Image
+  description: Should be 1440x900 pixels, with person on right half of image.
 - type: text
   name: credentials
-  label: credentials
+  label: Credentials
+  description: Ex. AIA, NCARB, LEED-AP
 - type: text
   name: position
-  label: position
+  label: Position
+  description: Ex. President
+- type: text
+  name: email
+  label: Email Address
 - type: text
   name: phone
-  label: phone
+  label: Phone Number
+  description: 'Please follow format: XXX.XXX.XXXX'
+  config:
+    required: true
 - type: text
   name: fax
-  label: fax
+  label: Fax Number
+  description: 'Please follow format: XXX.XXX.XXXX'
