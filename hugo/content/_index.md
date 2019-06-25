@@ -19,5 +19,8 @@ slides:
   details: 2014 - Residential, Indianapolis
   slug: gentili
   image: "/images/gentili.jpg"
+projects:
+- project: projects/Commercial/moeller-house.md
+- project: projects/Residential/gentili.md
 
 ---
