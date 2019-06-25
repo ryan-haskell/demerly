@@ -7,7 +7,6 @@ sections:
 - type: document
   path: hugo/content/_index.md
   label: Homepage
-  match: "**/*"
 - type: directory
   path: hugo/content
   label: Pages
