@@ -4,23 +4,35 @@ hide_body: true
 fields:
 - type: text
   name: name
-  label: name
+  label: Name
+  hidden: true
 - type: text
   name: description
-  label: description
+  label: SEO Description
+  description: A short sentence describing the page to Google.
+  config:
+    required: true
 - type: field_group_list
   name: slides
   label: slides
   fields:
   - type: text
     name: title
-    label: title
+    label: Title
+    description: Ex. Moeller House
+    config:
+      required: true
   - type: text
     name: details
-    label: details
+    label: Details
+    description: Ex. 2014 - Residential, Indianapolis
+    config:
+      required: true
   - type: text
     name: slug
     label: slug
   - type: file
     name: image
-    label: image
+    label: Image
+    description: Should be at least 1440 pixels wide. The image will always be centered,
+      but the visible portion is based on user's screen size.
