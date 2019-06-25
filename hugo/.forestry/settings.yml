@@ -33,7 +33,6 @@ sections:
 - type: document
   path: hugo/content/process/_index.md
   label: Process
-  match: "**/*"
 - type: heading
   label: Contact
 - type: document
@@ -42,7 +41,6 @@ sections:
 - type: document
   path: hugo/data/settings.yml
   label: Site Settings
-  match: "**/*"
 upload_dir: hugo/static/images
 public_path: "/images"
 front_matter_path: ''

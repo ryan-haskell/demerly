@@ -1,0 +1,50 @@
+---
+label: site-settings
+hide_body: true
+fields:
+- type: field_group
+  name: header
+  label: header
+  fields:
+  - type: text
+    name: brand
+    label: brand
+  - type: field_group
+    name: logos
+    label: logos
+    fields:
+    - type: file
+      name: mobile
+      label: mobile
+    - type: file
+      name: desktop
+      label: desktop
+  - type: field_group
+    name: linkLabels
+    label: linkLabels
+    fields:
+    - type: text
+      name: projects
+      label: projects
+    - type: text
+      name: process
+      label: process
+    - type: text
+      name: profile
+      label: profile
+    - type: text
+      name: contact
+      label: contact
+- type: field_group
+  name: footer
+  label: footer
+  fields:
+  - type: text
+    name: address
+    label: address
+  - type: text
+    name: phone
+    label: phone
+  - type: text
+    name: fax
+    label: fax
