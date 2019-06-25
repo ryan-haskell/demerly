@@ -56,7 +56,7 @@ fields:
   config:
     min: 
     max: 
-    labelField: 
+    labelField: project
   label: Featured Projects
 pages:
 - hugo/content/_index.md
