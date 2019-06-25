@@ -12,13 +12,12 @@ sections:
 - type: document
   path: hugo/content/profile/_index.md
   label: Landing Page
-  match: "**/*"
 - type: directory
   path: hugo/content/profile
   label: Detail Pages
   create: documents
   match: "**/*"
-  exclude: _index.md
+  exclude: "*_index.md"
   templates:
   - profile-detail
 - type: directory
@@ -34,7 +33,6 @@ sections:
 - type: document
   path: hugo/content/contact/_index.md
   label: Contact
-  match: "**/*"
 upload_dir: hugo/static/images
 public_path: "/images"
 front_matter_path: ''
