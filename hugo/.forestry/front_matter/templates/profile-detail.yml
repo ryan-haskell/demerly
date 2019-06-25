@@ -1,0 +1,40 @@
+---
+label: People
+hide_body: false
+fields:
+- type: text
+  name: title
+  label: Name
+  config:
+    required: true
+- type: text
+  name: description
+  label: SEO Description
+  description: A short, simple sentence describing the page.
+  config:
+    required: true
+- type: file
+  name: image
+  label: Image
+  description: Should be 1440x900 pixels, with person on right half of image.
+- type: text
+  name: credentials
+  label: Credentials
+  description: Ex. AIA, NCARB, LEED-AP
+- type: text
+  name: position
+  label: Position
+  description: Ex. President
+- type: text
+  name: email
+  label: Email Address
+- type: text
+  name: phone
+  label: Phone Number
+  description: 'Please follow format: XXX.XXX.XXXX'
+  config:
+    required: true
+- type: text
+  name: fax
+  label: Fax Number
+  description: 'Please follow format: XXX.XXX.XXXX'
