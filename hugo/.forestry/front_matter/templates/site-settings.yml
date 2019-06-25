@@ -1,5 +1,5 @@
 ---
-label: site-settings
+label: Site Settings
 hide_body: true
 fields:
 - type: field_group
