@@ -1,4 +1,37 @@
 ---
 label: Project
 hide_body: true
-fields: []
+fields:
+- name: title
+  type: text
+  config:
+    required: true
+  label: Title
+  description: Ex. Moeller House
+- name: year
+  type: text
+  config:
+    required: true
+  label: Year
+  description: Ex. 2014
+- name: location
+  type: text
+  config:
+    required: true
+  label: Location
+  description: Ex. Indianapolis
+- name: images
+  type: image_gallery
+  config: {}
+  label: Images
+  description: Should be 1440x900 pixels
+- name: details
+  type: textarea
+  default: ''
+  config:
+    required: true
+    wysiwyg: false
+    schema:
+      format: markdown
+  label: Details
+  description: A short, simple paragraph explaining the project.
