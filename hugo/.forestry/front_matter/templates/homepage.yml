@@ -38,3 +38,5 @@ fields:
   label: Featured Projects
   config:
     labelField: title
+pages:
+- hugo/content/_index.md

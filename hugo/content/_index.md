@@ -1,6 +1,7 @@
 ---
 name: Homepage
-description: Homepage description
+description: Demerly Architects is a full service architectural studio specializing
+  in custom residential design.
 slides:
 - title: Moeller House
   details: 2014 - Residential, Indianapolis
