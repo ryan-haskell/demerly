@@ -153,6 +153,10 @@ viewEmail email =
         []
         [ a
             [ href ("mailto:" ++ email)
+            , css
+                (Style.typography.smallLink
+                    ++ [ color Style.colors.purple ]
+                )
             ]
             [ text email
             ]
