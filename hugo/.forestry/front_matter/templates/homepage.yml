@@ -40,4 +40,3 @@ fields:
     labelField: title
 pages:
 - hugo/content/_index.md
-- hugo/content/_index.md
