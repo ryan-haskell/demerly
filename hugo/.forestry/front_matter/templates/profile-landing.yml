@@ -17,3 +17,5 @@ fields:
   label: Team Title
   config:
     required: true
+pages:
+- hugo/content/profile/_index.md
