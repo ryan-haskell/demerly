@@ -15,7 +15,6 @@ sections:
 - type: document
   path: hugo/data/projects/_index.md
   label: Project Landing Page
-  match: "**/*"
 - type: directory
   path: hugo/content/projects
   label: Projects

@@ -1,0 +1,13 @@
+---
+label: General Content
+hide_body: false
+fields:
+- type: text
+  name: title
+  label: title
+- type: text
+  name: description
+  label: description
+- type: file
+  name: image
+  label: image
