@@ -1,4 +1,19 @@
 {
   "settings": {{ .Site.Data.settings | jsonify }},
-  "page": {}
+  "page": {
+    "title": {{ .Title | jsonify }},
+    "description": {{ .Description | jsonify }},
+    "team": {
+      "title":  {{ .Params.teamTitle | jsonify }},
+      "people": [
+        {{ range $i, $page := .Pages }}
+          {{ if ne $i 0 }},{{ end }}
+          { "name": {{ $page.Title | jsonify }},
+            "image": {{ $page.Params.image | jsonify }},
+            "url": {{ printf "/%s" (strings.TrimRight ".md" $page.Path) | jsonify }}
+          }
+        {{ end }}
+      ]
+    }
+  }
 }

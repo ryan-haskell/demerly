@@ -7,6 +7,7 @@ import Browser.Dom
 import Browser.Events
 import Browser.Navigation as Nav
 import Components
+import Css exposing (..)
 import Data.Content as Content exposing (Content)
 import Data.Settings as Settings exposing (Settings)
 import Html.Styled exposing (..)
@@ -67,7 +68,7 @@ type Page
     | ProfileDetail Page.ProfileDetail.Content
     | ContactLanding Page.ContactLanding.Content
     | NotFound
-    | BadJson String
+    | BadJson
 
 
 type Msg
@@ -129,7 +130,7 @@ initModel json url key =
                 initPage route content
 
             Err reason ->
-                BadJson (D.errorToString reason)
+                BadJson
         )
 
 
@@ -144,7 +145,7 @@ initPage route content =
                 )
 
         ( Route.Homepage, _ ) ->
-            NotFound
+            BadJson
 
         ( Route.ProjectsLanding, Content.OnlySettings settings ) ->
             ProjectsLanding
@@ -152,28 +153,28 @@ initPage route content =
                 Page.ProjectsLanding.init
 
         ( Route.ProjectsLanding, _ ) ->
-            NotFound
+            BadJson
 
         ( Route.ProjectsDetail _, Content.ProjectDetail settings page ) ->
             ProjectsDetail
                 (Page.ProjectsDetail.Content settings page)
 
         ( Route.ProjectsDetail _, _ ) ->
-            NotFound
+            BadJson
 
         ( Route.ProcessLanding, Content.OnlySettings settings ) ->
             ProcessLanding
                 (Page.ProcessLanding.Content settings)
 
         ( Route.ProcessLanding, _ ) ->
-            NotFound
+            BadJson
 
-        ( Route.ProfileLanding, Content.OnlySettings settings ) ->
+        ( Route.ProfileLanding, Content.ProfileLanding settings page ) ->
             ProfileLanding
-                (Page.ProfileLanding.Content settings)
+                (Page.ProfileLanding.Content settings page)
 
         ( Route.ProfileLanding, _ ) ->
-            NotFound
+            BadJson
 
         ( Route.ProfileDetail slug, Content.ProfileDetail settings page ) ->
             ProfileDetail
@@ -183,14 +184,14 @@ initPage route content =
                 )
 
         ( Route.ProfileDetail _, _ ) ->
-            NotFound
+            BadJson
 
         ( Route.ContactLanding, Content.OnlySettings settings ) ->
             ContactLanding
                 (Page.ContactLanding.Content settings)
 
         ( Route.ContactLanding, _ ) ->
-            NotFound
+            BadJson
 
         ( Route.NotFound, _ ) ->
             NotFound
@@ -370,7 +371,7 @@ viewPage { page, context } =
             )
 
         ProfileLanding content ->
-            ( Page.ProfileLanding.view
+            ( Page.ProfileLanding.view content
             , content.settings
             )
 
@@ -385,9 +386,22 @@ viewPage { page, context } =
             , content.settings
             )
 
-        BadJson reason ->
+        BadJson ->
             ( { title = "Oops | Demerly Architects"
-              , body = [ text reason ]
+              , body =
+                    [ div
+                        [ css Style.styles.container
+                        , css [ padding2 zero Style.spacing.small ]
+                        ]
+                        [ h1 [] [ text "Oops!" ]
+                        , p []
+                            [ text "The content for this page didn't match up."
+                            ]
+                        , p []
+                            [ text "Maybe a required field is missing on the backend?"
+                            ]
+                        ]
+                    ]
               }
             , Settings.fallback
             )

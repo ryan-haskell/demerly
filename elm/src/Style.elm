@@ -125,6 +125,18 @@ typography =
             , letterSpacing (px 0.9)
             ]
         ]
+    , paragraph =
+        [ fontSize (px 16)
+        , lineHeight (px 24)
+        , letterSpacing (px 0.31)
+        , fontFamilies families.body
+        , fontWeight (int 400)
+        , breakpoints.desktop
+            [ fontSize (px 18)
+            , lineHeight (px 24)
+            , letterSpacing (px 0.31)
+            ]
+        ]
     , link =
         [ fontSize (px 20)
         , lineHeight (px 24)

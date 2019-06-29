@@ -31,7 +31,10 @@ view { page } =
                 , text ", "
                 , text page.location
                 ]
-            , div [] (List.map (\url -> img [ src url, alt page.title ] []) page.images)
+            , div []
+                (List.map (\url -> img [ src url, alt page.title ] [])
+                    page.images
+                )
             ]
         ]
     }
