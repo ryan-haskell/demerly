@@ -15,10 +15,9 @@ import Html.Styled.Attributes exposing (class, classList, css)
 import Http
 import Json.Decode as D
 import Json.Encode as Json
-import Page.ContactLanding
+import Page.GeneralContent
 import Page.Homepage
 import Page.NotFound
-import Page.ProcessLanding
 import Page.ProfileDetail
 import Page.ProfileLanding
 import Page.ProjectsDetail
@@ -68,10 +67,9 @@ type Page
     = Homepage Page.Homepage.Content
     | ProjectsLanding Page.ProjectsLanding.Content Page.ProjectsLanding.Model
     | ProjectsDetail Page.ProjectsDetail.Content Page.ProjectsDetail.Model
-    | ProcessLanding Page.ProcessLanding.Content
+    | GeneralContent Page.GeneralContent.Content
     | ProfileLanding Page.ProfileLanding.Content
     | ProfileDetail Page.ProfileDetail.Content
-    | ContactLanding Page.ContactLanding.Content
     | NotFound
     | BadJson
 
@@ -170,9 +168,9 @@ initPage route content =
         ( Route.ProjectsDetail _, _ ) ->
             BadJson
 
-        ( Route.ProcessLanding, Content.OnlySettings settings ) ->
-            ProcessLanding
-                (Page.ProcessLanding.Content settings)
+        ( Route.ProcessLanding, Content.GeneralContent settings page ) ->
+            GeneralContent
+                (Page.GeneralContent.Content settings page)
 
         ( Route.ProcessLanding, _ ) ->
             BadJson
@@ -194,9 +192,9 @@ initPage route content =
         ( Route.ProfileDetail _, _ ) ->
             BadJson
 
-        ( Route.ContactLanding, Content.OnlySettings settings ) ->
-            ContactLanding
-                (Page.ContactLanding.Content settings)
+        ( Route.ContactLanding, Content.GeneralContent settings page ) ->
+            GeneralContent
+                (Page.GeneralContent.Content settings page)
 
         ( Route.ContactLanding, _ ) ->
             BadJson
@@ -367,11 +365,6 @@ view model =
 viewPage : Model -> ( Document Msg, Settings )
 viewPage { page, context } =
     case page of
-        ContactLanding content ->
-            ( Page.ContactLanding.view
-            , content.settings
-            )
-
         Homepage content ->
             ( Page.Homepage.view context content
             , content.settings
@@ -382,8 +375,8 @@ viewPage { page, context } =
             , Settings.fallback
             )
 
-        ProcessLanding content ->
-            ( Page.ProcessLanding.view
+        GeneralContent content ->
+            ( Page.GeneralContent.view content
             , content.settings
             )
 

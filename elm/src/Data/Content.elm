@@ -1,5 +1,6 @@
 module Data.Content exposing (Content(..), decoder)
 
+import Data.GeneralContent exposing (GeneralContent)
 import Data.Homepage exposing (Homepage)
 import Data.ProfileDetail exposing (ProfileDetail)
 import Data.ProfileLanding exposing (ProfileLanding)
@@ -9,16 +10,13 @@ import Data.Settings exposing (Settings)
 import Json.Decode as D exposing (Decoder)
 
 
-
--- TODO: 3. add in a case for general content
-
-
 type Content
     = Homepage Settings Homepage
     | ProfileLanding Settings ProfileLanding
     | ProfileDetail Settings ProfileDetail
     | ProjectsLanding Settings ProjectsLanding
     | ProjectsDetail Settings ProjectsDetail
+    | GeneralContent Settings GeneralContent
     | OnlySettings Settings
 
 
@@ -29,6 +27,7 @@ decoder =
         , page ProfileDetail Data.ProfileDetail.decoder
         , page ProjectsDetail Data.ProjectsDetail.decoder
         , page ProjectsLanding Data.ProjectsLanding.decoder
+        , page GeneralContent Data.GeneralContent.decoder
         , page Homepage Data.Homepage.decoder
         , D.map OnlySettings
             (D.field "settings" Data.Settings.decoder)
