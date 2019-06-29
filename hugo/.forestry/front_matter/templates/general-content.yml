@@ -16,4 +16,5 @@ fields:
   name: image
   label: Image
 pages:
+- hugo/content/contact/_index.md
 - hugo/content/process/_index.md
