@@ -1,9 +1,10 @@
 ---
 title: Process
-description: Designing, building, and updating with a vision of that which does not exist.
-image: /images/moeller-house.jpg
----
+description: Designing, building, and updating with a vision of that which does not
+  exist.
+image: "/images/moeller-house.jpg"
 
+---
 Demerly Architects is a full service architectural studio specializing in custom residential design. 
 
 Founded in 1999 by Mark Demerly, we approach design as a collaborative process working with you to develop a design that fits your needs. 
