@@ -38,3 +38,5 @@ fields:
   name: fax
   label: Fax Number
   description: 'Please follow format: XXX.XXX.XXXX'
+pages:
+- hugo/content/profile/rene-hernandez.md
