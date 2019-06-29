@@ -13,8 +13,8 @@ sections:
 - type: heading
   label: Projects
 - type: document
-  path: hugo/data/projects/_index.md
-  label: Project Landing Page
+  path: hugo/content/projects/_index.md
+  label: Projects Landing Page
 - type: directory
   path: hugo/content/projects
   label: Projects
