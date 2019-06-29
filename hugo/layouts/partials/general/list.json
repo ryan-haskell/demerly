@@ -1,0 +1,9 @@
+{
+  "settings": {{ .Site.Data.settings | jsonify }},
+  "page": {
+    "title": {{ .Title | jsonify }},
+    "description": {{ .Description | jsonify }},
+    "image": {{ .Params.image | jsonify }},
+    "content": {{ .RawContent | jsonify }}
+  }
+}
