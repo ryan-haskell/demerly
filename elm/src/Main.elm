@@ -47,7 +47,7 @@ type Transition
 
 pageTransitionSpeed : Float
 pageTransitionSpeed =
-    300
+    200
 
 
 isLayoutVisible : Transition -> Bool
@@ -63,7 +63,7 @@ isPageVisible t =
 type Page
     = Homepage Page.Homepage.Content
     | ProjectsLanding Page.ProjectsLanding.Content Page.ProjectsLanding.Model
-    | ProjectsDetail Page.ProjectsDetail.Content
+    | ProjectsDetail Page.ProjectsDetail.Content Page.ProjectsDetail.Model
     | ProcessLanding Page.ProcessLanding.Content
     | ProfileLanding Page.ProfileLanding.Content
     | ProfileDetail Page.ProfileDetail.Content
@@ -80,6 +80,7 @@ type Msg
     | AppNavigatedTo Url (Result Http.Error Content)
     | SetTransition Transition
     | ProjectsLandingSentMsg Page.ProjectsLanding.Msg
+    | ProjectsDetailSentMsg Page.ProjectsDetail.Msg
 
 
 main : Program Json.Value Model Msg
@@ -160,6 +161,7 @@ initPage route content =
         ( Route.ProjectsDetail _, Content.ProjectsDetail settings page ) ->
             ProjectsDetail
                 (Page.ProjectsDetail.Content settings page)
+                Page.ProjectsDetail.init
 
         ( Route.ProjectsDetail _, _ ) ->
             BadJson
@@ -236,7 +238,7 @@ update msg model =
 
         AppReceivedContent url result ->
             ( model
-            , delay 300 (AppNavigatedTo url result)
+            , delay 200 (AppNavigatedTo url result)
             )
 
         AppNavigatedTo url result ->
@@ -262,6 +264,20 @@ update msg model =
                         | page =
                             ProjectsLanding content
                                 (Page.ProjectsLanding.update msg_ model_)
+                    }
+
+                _ ->
+                    model
+            , Cmd.none
+            )
+
+        ProjectsDetailSentMsg msg_ ->
+            ( case model.page of
+                ProjectsDetail content model_ ->
+                    { model
+                        | page =
+                            ProjectsDetail content
+                                (Page.ProjectsDetail.update content msg_ model_)
                     }
 
                 _ ->
@@ -383,8 +399,9 @@ viewPage { page, context } =
             , content.settings
             )
 
-        ProjectsDetail content ->
-            ( Page.ProjectsDetail.view content
+        ProjectsDetail content model ->
+            ( Page.ProjectsDetail.view content model
+                |> Document.map ProjectsDetailSentMsg
             , content.settings
             )
 
