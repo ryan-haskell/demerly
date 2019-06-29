@@ -2,6 +2,7 @@ baseURL = "http://demerly-architects.netlify.com"
 languageCode = "en-us"
 title = "Demerly Architects"
 [outputs]
-    page = ["HTML", "json"] # A player
-    section = ["HTML", "json"] # All players
-    home = ["HTML", "json"] # Everything
+    page = ["HTML", "json"]
+    section = ["HTML", "json"]
+    home = ["HTML", "json"]
+[taxonomies]
