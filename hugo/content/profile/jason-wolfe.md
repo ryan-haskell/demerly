@@ -1,7 +1,6 @@
 ---
 title: Jason Wolfe
 description: Jason Wolfe is the bomb.com
-name: Jason Wolfe
 image: "/images/photo-mark2.jpg"
 email: mark@demerlyarchitects.com
 credentials: AIA, NCARB, LEED-AP

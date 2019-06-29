@@ -1,7 +1,6 @@
 ---
 title: Mark Demerly
 description: Mark Demerly is the bomb.com
-name: Mark Demerly
 image: "/images/photo-mark2.jpg"
 email: mark@demerlyarchitects.com
 credentials: AIA, NCARB, LEED-AP

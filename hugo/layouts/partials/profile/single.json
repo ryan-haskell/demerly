@@ -1,7 +1,7 @@
 {
   "settings": {{ .Site.Data.settings | jsonify }},
   "page": {
-    "name": {{ .Params.name | jsonify }},
+    "name": {{ .Params.title | jsonify }},
     "image": {{ .Params.image | jsonify }},
     "credentials": {{ .Params.credentials | jsonify }},
     "position": {{ .Params.position | jsonify }},
