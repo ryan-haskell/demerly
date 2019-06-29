@@ -4,10 +4,14 @@ hide_body: false
 fields:
 - type: text
   name: title
-  label: title
+  label: Title
+  config:
+    required: true
 - type: text
   name: description
-  label: description
+  label: Description
+  config:
+    required: true
 - type: file
   name: image
-  label: image
+  label: Image
