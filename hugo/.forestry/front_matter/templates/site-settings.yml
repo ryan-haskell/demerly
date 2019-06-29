@@ -1,18 +1,19 @@
 ---
-label: Site Settings
+label: site-settings
 hide_body: true
 fields:
 - type: field_group
   name: header
-  label: Header
+  label: Header Settings
   fields:
   - type: text
     name: brand
-    label: Site Name
-    default: Demerly Architects
+    label: Site title
+    config:
+      required: true
   - type: field_group
     name: logos
-    label: Logo Images
+    label: Logos
     fields:
     - type: file
       name: mobile
@@ -29,11 +30,9 @@ fields:
       label: Projects
       config:
         required: true
-      default: Projects
     - type: text
       name: process
       label: Process
-      default: Process
       config:
         required: true
     - type: text
@@ -41,35 +40,27 @@ fields:
       label: Profile
       config:
         required: true
-      default: Profile
     - type: text
       name: contact
       label: Contact
       config:
         required: true
-      default: Contact
-  description: The navigation bar across the top of the site.
 - type: field_group
   name: footer
-  label: Footer
+  label: Footer Settings
   fields:
   - type: text
     name: address
     label: Address
-    default: 6500 Westfield Boulevard / Indianapolis, IN 46220
     config:
       required: true
   - type: text
     name: phone
     label: Phone
-    description: 'Please follow format: XXX.XXX.XXXX'
     config:
       required: true
-    default: 317.847.0724
   - type: text
     name: fax
-    label: Fax Number
-    default: 317.847.0724
+    label: Fax
     config:
       required: true
-    description: 'Please follow format: XXX.XXX.XXXX'

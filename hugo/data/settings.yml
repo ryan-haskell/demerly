@@ -1,14 +1,15 @@
+---
 header:
   brand: Demerly Architects
   logos:
-    mobile: /images/logo-mobile.svg
-    desktop: /images/logo-desktop.png
+    mobile: "/images/logo-mobile.svg"
+    desktop: "/images/logo-desktop.png"
   linkLabels:
     projects: Projects
     process: Process
     profile: Profile
     contact: Contact
 footer:
-  address: '6500 Westfield Boulevard / Indianapolis, IN 46220'
-  phone: '317.847.0724'
-  fax: '888.895.2811'
+  address: 6500 Westfield Boulevard / Indianapolis, IN 46220
+  phone: 317.847.0724
+  fax: 888.895.2811
