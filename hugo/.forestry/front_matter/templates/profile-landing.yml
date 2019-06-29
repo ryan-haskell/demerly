@@ -4,10 +4,16 @@ hide_body: true
 fields:
 - type: text
   name: title
-  label: title
+  label: Title
+  config:
+    required: true
 - type: textarea
   name: description
-  label: description
+  label: Description
+  config:
+    required: true
 - type: text
   name: teamTitle
-  label: teamTitle
+  label: Team Title
+  config:
+    required: true
