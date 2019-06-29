@@ -23,6 +23,7 @@ import Page.ProfileDetail
 import Page.ProfileLanding
 import Page.ProjectsDetail
 import Page.ProjectsLanding
+import Ports
 import Process
 import Route exposing (Route)
 import Style
@@ -111,6 +112,7 @@ init json url key =
                         )
                 )
         , delay pageTransitionSpeed (SetTransition PageReady)
+        , Ports.jumpToTop
         ]
     )
 
@@ -147,15 +149,15 @@ initPage route content =
         ( Route.Homepage, _ ) ->
             BadJson
 
-        ( Route.ProjectsLanding, Content.OnlySettings settings ) ->
+        ( Route.ProjectsLanding, Content.ProjectsLanding settings page ) ->
             ProjectsLanding
-                (Page.ProjectsLanding.Content settings)
+                (Page.ProjectsLanding.Content settings page)
                 Page.ProjectsLanding.init
 
         ( Route.ProjectsLanding, _ ) ->
             BadJson
 
-        ( Route.ProjectsDetail _, Content.ProjectDetail settings page ) ->
+        ( Route.ProjectsDetail _, Content.ProjectsDetail settings page ) ->
             ProjectsDetail
                 (Page.ProjectsDetail.Content settings page)
 
@@ -245,7 +247,7 @@ update msg model =
                         |> Result.map (initPage (Route.fromUrl url))
                         |> Result.withDefault NotFound
               }
-            , Cmd.none
+            , Ports.jumpToTop
             )
 
         SetTransition transition ->

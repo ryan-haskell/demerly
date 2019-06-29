@@ -1,9 +1,9 @@
-module Data.ProjectDetail exposing (ProjectDetail, decoder)
+module Data.ProjectsDetail exposing (ProjectsDetail, decoder)
 
 import Json.Decode as D exposing (Decoder)
 
 
-type alias ProjectDetail =
+type alias ProjectsDetail =
     { title : String
     , type_ : String
     , images : List String
@@ -13,9 +13,9 @@ type alias ProjectDetail =
     }
 
 
-decoder : Decoder ProjectDetail
+decoder : Decoder ProjectsDetail
 decoder =
-    D.map6 ProjectDetail
+    D.map6 ProjectsDetail
         (D.field "title" D.string)
         (D.field "type" D.string)
         (D.field "images" (D.list D.string))

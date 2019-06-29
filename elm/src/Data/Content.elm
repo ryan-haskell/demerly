@@ -1,9 +1,10 @@
 module Data.Content exposing (Content(..), decoder)
 
 import Data.Homepage exposing (Homepage)
-import Data.ProfileLanding exposing (ProfileLanding)
 import Data.ProfileDetail exposing (ProfileDetail)
-import Data.ProjectDetail exposing (ProjectDetail)
+import Data.ProfileLanding exposing (ProfileLanding)
+import Data.ProjectsDetail exposing (ProjectsDetail)
+import Data.ProjectsLanding exposing (ProjectsLanding)
 import Data.Settings exposing (Settings)
 import Json.Decode as D exposing (Decoder)
 
@@ -12,7 +13,8 @@ type Content
     = Homepage Settings Homepage
     | ProfileLanding Settings ProfileLanding
     | ProfileDetail Settings ProfileDetail
-    | ProjectDetail Settings ProjectDetail
+    | ProjectsLanding Settings ProjectsLanding
+    | ProjectsDetail Settings ProjectsDetail
     | OnlySettings Settings
 
 
@@ -22,7 +24,8 @@ decoder =
     D.oneOf
         [ page ProfileLanding Data.ProfileLanding.decoder
         , page ProfileDetail Data.ProfileDetail.decoder
-        , page ProjectDetail Data.ProjectDetail.decoder
+        , page ProjectsDetail Data.ProjectsDetail.decoder
+        , page ProjectsLanding Data.ProjectsLanding.decoder
         , page Homepage Data.Homepage.decoder
         , D.map OnlySettings
             (D.field "settings" Data.Settings.decoder)

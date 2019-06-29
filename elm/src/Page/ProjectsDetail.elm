@@ -2,7 +2,7 @@ module Page.ProjectsDetail exposing (Content, view)
 
 import Application.Document exposing (Document)
 import Css exposing (..)
-import Data.ProjectDetail as Page
+import Data.ProjectsDetail as Page
 import Data.Settings exposing (Settings)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (alt, css, src)
@@ -11,7 +11,7 @@ import Style
 
 type alias Content =
     { settings : Settings
-    , page : Page.ProjectDetail
+    , page : Page.ProjectsDetail
     }
 
 

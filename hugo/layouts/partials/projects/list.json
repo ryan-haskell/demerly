@@ -1,4 +1,20 @@
 {
   "settings": {{ .Site.Data.settings | jsonify }},
-  "page": {}
+  "page": {
+    "title": "Projects",
+    "description": "Demerly Architects lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam at eleifend urna. Ut ut odio vel nibh ultricies.",
+    "filters": {
+      "label": "Filter by",
+      "allLabel": "All"
+    },
+    "projects": [
+      {{ range $i, $page := .Pages }}
+        {{ if ne $i 0 }},{{ end }}
+        { "name": {{ $page.Title | jsonify }},
+          "image": {{ index $page.Params.images 0 | jsonify }},
+          "url": {{ printf "/%s" (strings.TrimRight ".md" $page.Path) | jsonify }}
+        }
+      {{ end }}
+    ]
+  }
 }
