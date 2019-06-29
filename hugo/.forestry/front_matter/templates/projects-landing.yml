@@ -22,3 +22,5 @@ fields:
   label: All Label
   config:
     required: true
+pages:
+- hugo/content/projects/_index.md
