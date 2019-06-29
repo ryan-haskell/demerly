@@ -60,6 +60,10 @@ isPageVisible t =
     t == PageReady
 
 
+
+-- TODO: 4. replace profile and contact with general content page
+
+
 type Page
     = Homepage Page.Homepage.Content
     | ProjectsLanding Page.ProjectsLanding.Content Page.ProjectsLanding.Model

@@ -9,6 +9,10 @@ import Data.Settings exposing (Settings)
 import Json.Decode as D exposing (Decoder)
 
 
+
+-- TODO: 3. add in a case for general content
+
+
 type Content
     = Homepage Settings Homepage
     | ProfileLanding Settings ProfileLanding
@@ -20,7 +24,6 @@ type Content
 
 decoder : Decoder Content
 decoder =
-    -- Remember: the order matters!
     D.oneOf
         [ page ProfileLanding Data.ProfileLanding.decoder
         , page ProfileDetail Data.ProfileDetail.decoder
