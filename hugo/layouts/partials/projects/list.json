@@ -1,11 +1,11 @@
 {
   "settings": {{ .Site.Data.settings | jsonify }},
   "page": {
-    "title": "Projects",
-    "description": "Demerly Architects lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam at eleifend urna. Ut ut odio vel nibh ultricies.",
+    "title": {{ .Title | jsonify }},
+    "description": {{ .Description | jsonify }},
     "filters": {
-      "label": "Filter by",
-      "allLabel": "All"
+      "label": {{ .Params.filterByLabel | jsonify }},
+      "allLabel": {{ .Params.allLabel | jsonify }}
     },
     "projects": [
       {{ range $i, $page := .Pages }}
