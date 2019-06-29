@@ -4,13 +4,21 @@ hide_body: true
 fields:
 - type: text
   name: title
-  label: title
+  label: Title
+  config:
+    required: true
 - type: textarea
   name: description
-  label: description
+  label: Description
+  config:
+    required: true
 - type: text
   name: filterByLabel
-  label: filterByLabel
+  label: Filter By Label
+  config:
+    required: true
 - type: text
   name: allLabel
-  label: allLabel
+  label: All Label
+  config:
+    required: true
