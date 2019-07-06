@@ -43,8 +43,10 @@ view { page } =
         ]
     }
 
+
 sortByLastName =
     List.sortBy (lastName >> Maybe.withDefault "")
+
 
 lastName : { a | name : String } -> Maybe String
 lastName =
@@ -60,16 +62,6 @@ leadCopy description =
         [ Html.Styled.fromUnstyled <|
             Markdown.toHtml [] description
         ]
-
-
-photoDimensions =
-    { width = 635
-    , height = 375
-    }
-
-
-photoRatio =
-    photoDimensions.height / photoDimensions.width
 
 
 profileList : List Page.PeopleLink -> Html msg
@@ -96,7 +88,7 @@ profileCard person =
             , backgroundPosition2 (pct 100) zero
             , backgroundImage (url person.image)
             , width (pct 100)
-            , paddingBottom (pct (photoRatio * 100))
+            , paddingBottom (pct (Style.photoCardRatio * 100))
             , position relative
             ]
         ]

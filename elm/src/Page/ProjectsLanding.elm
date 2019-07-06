@@ -97,6 +97,30 @@ gridChild project =
         [ viewProject project ]
 
 
+opaqueOverlayStyles =
+    [ Css.property "content" "''"
+    , display block
+    , position absolute
+    , top zero
+    , right zero
+    , left zero
+    , bottom zero
+    , backgroundColor Style.colors.overlayBlue
+    ]
+
+
+gradientOverlay =
+    [ Css.property "content" "''"
+    , display block
+    , position absolute
+    , top (pct 55)
+    , right zero
+    , left zero
+    , bottom zero
+    , backgroundImage (linearGradient2 toBottom (stop2 Style.colors.opaqueBlackZero <| pct 0) (stop <| Style.colors.opaqueBlack) [])
+    ]
+
+
 viewProject : Page.ProjectLink -> Html msg
 viewProject project =
     a
@@ -105,11 +129,14 @@ viewProject project =
             [ textDecoration none
             , display block
             , backgroundSize cover
-            , backgroundPosition2 (pct 100) zero
+            , backgroundRepeat noRepeat
+            , backgroundPosition center
             , backgroundImage (url project.image)
             , width (pct 100)
-            , paddingBottom (pct 50)
+            , paddingBottom (pct (Style.photoCardRatio * 100))
             , position relative
+            , before opaqueOverlayStyles
+            , after gradientOverlay
             ]
         ]
         [ span
@@ -119,6 +146,7 @@ viewProject project =
                 , left Style.spacing.small
                 , bottom Style.spacing.small
                 , color Style.colors.white
+                , zIndex (int 2)
                 ]
             ]
             [ text (project.name ++ " - " ++ Maybe.withDefault "" (getProjectType project))

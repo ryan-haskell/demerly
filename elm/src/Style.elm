@@ -4,6 +4,7 @@ module Style exposing
     , globals
     , grid
     , listReset
+    , photoCardRatio
     , sizes
     , spacing
     , styles
@@ -23,15 +24,27 @@ colors =
     , charcoal = rgb 151 151 151
     , white = rgb 255 255 255
     , purple = rgb 97 81 111
+    , overlayBlue = rgba 65 75 104 0.35
+    , opaqueBlack = rgba 0 0 0 0.7
+    , opaqueBlackZero = rgba 0 0 0 0
+    }
+
+
+spacingValues =
+    { tiny = 20
+    , small = 32
+    , medium = 48
+    , large = 64
+    , extraLarge = 96
     }
 
 
 spacing =
-    { tiny = px 20
-    , small = px 32
-    , medium = px 48
-    , large = px 64
-    , extraLarge = px 96
+    { tiny = px spacingValues.tiny
+    , small = px spacingValues.small
+    , medium = px spacingValues.medium
+    , large = px spacingValues.large
+    , extraLarge = px spacingValues.extraLarge
     }
 
 
@@ -78,7 +91,7 @@ breakpoints =
 
 
 halfGridWidth =
-    calc (pct 50) minus spacing.medium
+    calc (pct 50) minus (px (spacingValues.medium / 2))
 
 
 grid =
@@ -86,13 +99,13 @@ grid =
         [ breakpoints.desktop
             [ displayFlex
             , flexWrap wrap
+            , justifyContent spaceBetween
             ]
         ]
     , twoColumnList =
         [ marginBottom spacing.tiny
         , breakpoints.desktop
             [ width halfGridWidth
-            , marginRight spacing.medium
             , marginBottom spacing.medium
             ]
         ]
@@ -171,6 +184,16 @@ listReset =
     , paddingLeft zero
     , margin zero
     ]
+
+
+photoCardDimensions =
+    { width = 635
+    , height = 375
+    }
+
+
+photoCardRatio =
+    photoCardDimensions.height / photoCardDimensions.width
 
 
 globals =
