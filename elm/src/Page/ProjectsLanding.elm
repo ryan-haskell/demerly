@@ -54,7 +54,7 @@ view : Content -> Model -> Document Msg
 view { page } model =
     { title = "Projects | Demerly Architects"
     , body =
-        [ div
+        [ main_
             [ css Style.styles.container
             , css [ padding2 zero Style.spacing.small ]
             ]

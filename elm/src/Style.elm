@@ -9,6 +9,7 @@ module Style exposing
     , spacing
     , styles
     , typography
+    , visuallyHidden
     , widths
     )
 
@@ -23,6 +24,7 @@ colors =
     , dark = rgb 74 74 74
     , charcoal = rgb 151 151 151
     , white = rgb 255 255 255
+    , grey = rgb 238 238 238
     , purple = rgb 97 81 111
     , overlayBlue = rgba 65 75 104 0.35
     , opaqueBlack = rgba 0 0 0 0.7
@@ -62,6 +64,7 @@ widths =
 sizes =
     { navbarHeight = px heights.navbar
     , containerWidth = px widths.container
+    , pageHeightMobile = calc (vh 100) minus (px heights.navbar)
     , pageHeight = calc (vh 100) minus (px (heights.navbar + heights.footer))
     }
 
@@ -73,6 +76,17 @@ styles =
         , margin2 zero auto
         ]
     }
+
+
+visuallyHidden =
+    [ height (px 1)
+    , margin (px -1)
+    , overflow hidden
+    , padding zero
+    , position absolute
+    , width (px 1)
+    , Css.property "clip" "rect(1px, 1px, 1px, 1px)"
+    ]
 
 
 families =
@@ -168,6 +182,18 @@ typography =
         [ fontSize (px 18)
         , lineHeight (px 21)
         , letterSpacing (px 1)
+        , fontFamilies families.heading
+        , fontWeight (int 600)
+        , textTransform uppercase
+        , breakpoints.desktop
+            [ fontSize (px 20)
+            , lineHeight (px 24)
+            ]
+        ]
+    , toggleOverlayTitle =
+        [ fontSize (px 14)
+        , letterSpacing (px 1)
+        , lineHeight (px 20)
         , fontFamilies families.heading
         , fontWeight (int 600)
         , textTransform uppercase
