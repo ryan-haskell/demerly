@@ -85,13 +85,15 @@ view { page } model =
                     ]
                 ]
                 [ toggleTrigger page.title
+                , h1 [] [ text (String.fromInt model.currentImage) ]
                 , div
                     [ css
                         [ width (pct 100)
                         , height (pct 100)
+                        , position relative
                         ]
                     ]
-                    (List.map slideImage page.images)
+                    (List.indexedMap (slideImage model.currentImage) page.images)
                 , arrowsControl page.images
                 ]
             ]
@@ -99,13 +101,21 @@ view { page } model =
     }
 
 
-slideImage photo =
+slideImage currentImage idx photo =
     div
         [ css
             [ backgroundImage (url photo)
             , backgroundSize cover
             , width (pct 100)
             , height (pct 100)
+            , position absolute
+            , top zero
+            , left zero
+            , if currentImage == idx then
+                opacity (int 1)
+
+              else
+                opacity zero
             ]
         ]
         []
@@ -121,6 +131,12 @@ toggleTrigger label =
             , paddingRight (px 150)
             , height (px 90)
             , backgroundColor Style.colors.grey
+            , Style.breakpoints.desktop
+                [ backgroundColor transparent
+                , marginBottom zero
+                , top Style.spacing.medium
+                , left Style.spacing.medium
+                ]
             ]
         ]
         [ button
@@ -138,6 +154,10 @@ toggleTrigger label =
                     (Style.typography.toggleOverlayTitle
                         ++ [ color Style.colors.dark
                            , order (int 2)
+                           , Style.breakpoints.desktop
+                                [ order zero
+                                , color Style.colors.white
+                                ]
                            ]
                     )
                 ]
@@ -172,6 +192,19 @@ toggleTrigger label =
                         , transform (translate2 (pct -50) (pct -50))
                         , backgroundColor Style.colors.white
                         ]
+                    , Style.breakpoints.desktop
+                        [ marginLeft (px 14)
+                        , marginRight zero
+                        , width (px 35)
+                        , height (px 35)
+                        , backgroundColor Style.colors.white
+                        , after
+                            [ backgroundColor Style.colors.purple
+                            ]
+                        , before
+                            [ backgroundColor Style.colors.purple
+                            ]
+                        ]
                     ]
                 ]
                 []
@@ -187,6 +220,7 @@ arrowsControl images =
                 , right zero
                 , bottom zero
                 , backgroundColor Style.colors.grey
+                , displayFlex
                 ]
             ]
             [ button

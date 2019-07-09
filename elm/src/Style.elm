@@ -199,6 +199,7 @@ typography =
         , textTransform uppercase
         , breakpoints.desktop
             [ fontSize (px 20)
+            , fontWeight (int 400)
             , lineHeight (px 24)
             ]
         ]
