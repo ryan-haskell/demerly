@@ -9,11 +9,14 @@ module Page.ProjectsDetail exposing
 
 import Application.Document exposing (Document)
 import Css exposing (..)
+import Css.Transitions as Transitions
 import Data.ProjectsDetail as Page
 import Data.Settings exposing (Settings)
+import Html.Attributes as Attr
 import Html.Styled exposing (..)
-import Html.Styled.Attributes exposing (alt, css, src)
+import Html.Styled.Attributes exposing (attribute, css, href, src)
 import Html.Styled.Events exposing (onClick)
+import Markdown
 import Style
 
 
@@ -82,15 +85,20 @@ view { page } model =
                 [ css
                     [ height Style.sizes.pageHeightMobile
                     , position relative
+                    , overflow hidden
                     ]
                 ]
                 [ toggleTrigger page.title
-                , h1 [] [ text (String.fromInt model.currentImage) ]
+                , detailsModal model page
                 , div
                     [ css
                         [ width (pct 100)
                         , height (pct 100)
                         , position relative
+                        , Style.breakpoints.desktop
+                            [ after dimPsuedoOverlay
+                            , zIndex (int 2)
+                            ]
                         ]
                     ]
                     (List.indexedMap (slideImage model.currentImage) page.images)
@@ -111,6 +119,9 @@ slideImage currentImage idx photo =
             , position absolute
             , top zero
             , left zero
+            , Transitions.transition
+                [ Transitions.opacity 450
+                ]
             , if currentImage == idx then
                 opacity (int 1)
 
@@ -119,6 +130,65 @@ slideImage currentImage idx photo =
             ]
         ]
         []
+
+
+detailsModal model_ page =
+    div
+        [ css
+            (Style.overlayBase
+                ++ [ overflow auto
+                   , position absolute
+                   , top zero
+                   , bottom zero
+                   , left zero
+                   , right zero
+                   , zIndex (int 2)
+                   , padding Style.spacing.medium
+                   , paddingRight Style.spacing.small
+                   , backgroundColor Style.colors.opaquePurple
+                   , color Style.colors.white
+                   , visibility hidden
+                   , Style.breakpoints.desktop
+                        [ left (px 300)
+                        , zIndex (int 8)
+                        , displayFlex
+                        , flexDirection column
+                        , justifyContent center
+                        ]
+                   ]
+                ++ (if model_.isTextExpanded then
+                        [ opacity (int 1)
+                        , visibility visible
+                        , Transitions.transition
+                            [ Transitions.opacity 450
+                            ]
+                        ]
+
+                    else
+                        [ opacity zero
+                        , Transitions.transition
+                            [ Transitions.opacity 450
+                            , Transitions.visibility2 1 450
+                            ]
+                        ]
+                   )
+            )
+        ]
+        [ h1 [ css Style.visuallyHidden ] [ text page.title ]
+        , p
+            [ css
+                [ fontWeight (int 600)
+                , margin3 zero zero Style.spacing.small
+                ]
+            ]
+            [ text page.year
+            , text " – "
+            , text page.type_
+            , text ", "
+            , text page.location
+            ]
+        , Markdown.toHtml [ Attr.class "rich-text rich-text--large" ] page.details |> Html.Styled.fromUnstyled
+        ]
 
 
 toggleTrigger label =
@@ -130,12 +200,16 @@ toggleTrigger label =
             , right zero
             , paddingRight (px 150)
             , height (px 90)
+            , zIndex (int 3)
             , backgroundColor Style.colors.grey
             , Style.breakpoints.desktop
                 [ backgroundColor transparent
                 , marginBottom zero
                 , top Style.spacing.medium
                 , left Style.spacing.medium
+                , right auto
+                , paddingRight zero
+                , zIndex (int 7)
                 ]
             ]
         ]
@@ -146,6 +220,9 @@ toggleTrigger label =
                 , height (pct 100)
                 , displayFlex
                 , alignItems center
+                , Style.breakpoints.desktop
+                    [ width auto
+                    ]
                 ]
             , onClick ToggleTextSection
             ]
@@ -219,6 +296,7 @@ arrowsControl images =
                 [ position absolute
                 , right zero
                 , bottom zero
+                , zIndex (int 5)
                 , backgroundColor Style.colors.grey
                 , displayFlex
                 ]
@@ -321,6 +399,16 @@ rightArrow =
             ]
         ]
         []
+
+
+dimPsuedoOverlay =
+    Style.overlayBase
+        ++ [ Css.property "content" "''"
+           , display block
+           , bottom auto
+           , height (px 120)
+           , backgroundImage (linearGradient2 toBottom (stop2 Style.colors.opaqueBlack <| pct 0) (stop <| Style.colors.opaqueBlackZero) [])
+           ]
 
 
 

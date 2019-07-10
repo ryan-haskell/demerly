@@ -98,27 +98,20 @@ gridChild project =
 
 
 opaqueOverlayStyles =
-    [ Css.property "content" "''"
-    , display block
-    , position absolute
-    , top zero
-    , right zero
-    , left zero
-    , bottom zero
-    , backgroundColor Style.colors.overlayBlue
-    ]
+    Style.overlayBase
+        ++ [ Css.property "content" "''"
+           , display block
+           , backgroundColor Style.colors.overlayBlue
+           ]
 
 
 gradientOverlay =
-    [ Css.property "content" "''"
-    , display block
-    , position absolute
-    , top (pct 55)
-    , right zero
-    , left zero
-    , bottom zero
-    , backgroundImage (linearGradient2 toBottom (stop2 Style.colors.opaqueBlackZero <| pct 0) (stop <| Style.colors.opaqueBlack) [])
-    ]
+    Style.overlayBase
+        ++ [ Css.property "content" "''"
+           , display block
+           , top (pct 55)
+           , backgroundImage (linearGradient2 toBottom (stop2 Style.colors.opaqueBlackZero <| pct 0) (stop <| Style.colors.opaqueBlack) [])
+           ]
 
 
 viewProject : Page.ProjectLink -> Html msg

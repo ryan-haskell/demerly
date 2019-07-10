@@ -4,6 +4,7 @@ module Style exposing
     , globals
     , grid
     , listReset
+    , overlayBase
     , photoCardRatio
     , sizes
     , spacing
@@ -26,6 +27,7 @@ colors =
     , white = rgb 255 255 255
     , grey = rgb 238 238 238
     , purple = rgb 97 81 111
+    , opaquePurple = rgba 97 81 111 0.9
     , overlayBlue = rgba 65 75 104 0.35
     , opaqueBlack = rgba 0 0 0 0.7
     , opaqueBlackZero = rgba 0 0 0 0
@@ -86,6 +88,15 @@ visuallyHidden =
     , position absolute
     , width (px 1)
     , Css.property "clip" "rect(1px, 1px, 1px, 1px)"
+    ]
+
+
+overlayBase =
+    [ position absolute
+    , top zero
+    , bottom zero
+    , left zero
+    , right zero
     ]
 
 
@@ -240,6 +251,13 @@ globals =
             ]
         , Global.selector ".rich-text"
             [ lineHeight (num 1.5)
+            , fontFamilies families.body
+            ]
+        , Global.selector ".rich-text--large"
+            [ fontSize (px 22)
+            , breakpoints.desktop
+                [ fontSize (px 32)
+                ]
             ]
         , Global.selector ".page, .layout"
             [ opacity zero
