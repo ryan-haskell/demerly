@@ -24,7 +24,7 @@ navbar : Settings -> msg -> Context.Model -> Html msg
 navbar settings onMenuClick context =
     header
         [ css
-            [ height Style.sizes.navbarHeight 
+            [ height Style.sizes.navbarHeight
             , position relative
             , zIndex (int 3)
             ]
@@ -40,10 +40,10 @@ navbar settings onMenuClick context =
                 , zIndex (int 2)
                 , padding2 Style.spacing.tiny Style.spacing.small
                 ]
+            , css Style.styles.container
             ]
             [ div
-                [ css Style.styles.container
-                , css
+                [ css
                     [ height (pct 100)
                     ]
                 ]
