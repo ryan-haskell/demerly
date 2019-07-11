@@ -8,6 +8,7 @@ module Style exposing
     , photoCardRatio
     , sizes
     , spacing
+    , spacingValues
     , styles
     , typography
     , visuallyHidden
@@ -188,6 +189,16 @@ typography =
         , fontWeight (int 600)
         , breakpoints.desktop
             [ fontSize (px 18) ]
+        ]
+    , leadCopy =
+        [ fontSize (px 20)
+        , lineHeight (px 24)
+        , fontFamilies families.heading
+        , fontWeight (int 600)
+        , breakpoints.desktop
+            [ fontSize (px 28)
+            , lineHeight (px 32)
+            ]
         ]
     , highlightTitle =
         [ fontSize (px 18)
