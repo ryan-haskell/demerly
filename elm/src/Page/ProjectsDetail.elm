@@ -86,6 +86,9 @@ view { page } model =
                     [ height Style.sizes.pageHeightMobile
                     , position relative
                     , overflow hidden
+                    , Style.breakpoints.desktop
+                        [ height Style.sizes.pageHeight
+                        ]
                     ]
                 ]
                 [ toggleTrigger page.title
