@@ -91,7 +91,7 @@ view { page } model =
                         ]
                     ]
                 ]
-                [ toggleTrigger page.title
+                [ toggleTrigger model.isTextExpanded page.title
                 , detailsModal model page
                 , div
                     [ css
@@ -117,6 +117,7 @@ slideImage currentImage idx photo =
         [ css
             [ backgroundImage (url photo)
             , backgroundSize cover
+            , backgroundPosition center
             , width (pct 100)
             , height (pct 100)
             , position absolute
@@ -150,29 +151,23 @@ detailsModal model_ page =
                    , paddingRight Style.spacing.small
                    , backgroundColor Style.colors.opaquePurple
                    , color Style.colors.white
-                   , visibility hidden
                    , Style.breakpoints.desktop
-                        [ left (px 300)
+                        [ left (px 320)
                         , zIndex (int 8)
                         , displayFlex
                         , flexDirection column
                         , justifyContent center
                         ]
+                    ,Transitions.transition
+                            [ Transitions.transform 450
+                            ]
                    ]
                 ++ (if model_.isTextExpanded then
-                        [ opacity (int 1)
-                        , visibility visible
-                        , Transitions.transition
-                            [ Transitions.opacity 450
-                            ]
-                        ]
+                        []
 
                     else
-                        [ opacity zero
-                        , Transitions.transition
-                            [ Transitions.opacity 450
-                            , Transitions.visibility2 1 450
-                            ]
+                        [ transform (translateY (pct 100))
+                        , Style.breakpoints.desktop [ transform (translateX (pct 100)) ] 
                         ]
                    )
             )
@@ -193,8 +188,7 @@ detailsModal model_ page =
         , Markdown.toHtml [ Attr.class "rich-text rich-text--large" ] page.details |> Html.Styled.fromUnstyled
         ]
 
-
-toggleTrigger label =
+toggleTrigger isTextExpanded label =
     div
         [ css
             [ position absolute
@@ -208,7 +202,7 @@ toggleTrigger label =
             , Style.breakpoints.desktop
                 [ backgroundColor transparent
                 , marginBottom zero
-                , top Style.spacing.medium
+                , top (px 24)
                 , left Style.spacing.medium
                 , right auto
                 , paddingRight zero
@@ -275,9 +269,12 @@ toggleTrigger label =
                     , Style.breakpoints.desktop
                         [ marginLeft (px 14)
                         , marginRight zero
-                        , width (px 35)
-                        , height (px 35)
+                        , width (px 36)
+                        , height (px 36)
                         , backgroundColor Style.colors.white
+                        , Transitions.transition
+                            [ Transitions.transform 300
+                            ]
                         , after
                             [ backgroundColor Style.colors.purple
                             ]
@@ -286,6 +283,22 @@ toggleTrigger label =
                             ]
                         ]
                     ]
+                , css <|
+                    if isTextExpanded then
+                        [ Style.breakpoints.desktop
+                            [ backgroundColor Style.colors.purple
+                            , after
+                                [ backgroundColor Style.colors.white
+                                ]
+                            , before
+                                [ backgroundColor Style.colors.white
+                                ]
+                            ]
+                        , transform (rotate (deg 45))
+                        ]
+
+                    else
+                        []
                 ]
                 []
             ]
@@ -409,7 +422,7 @@ dimPsuedoOverlay =
         ++ [ Css.property "content" "''"
            , display block
            , bottom auto
-           , height (px 120)
+           , height (px 150)
            , backgroundImage (linearGradient2 toBottom (stop2 Style.colors.opaqueBlack <| pct 0) (stop <| Style.colors.opaqueBlackZero) [])
            ]
 
