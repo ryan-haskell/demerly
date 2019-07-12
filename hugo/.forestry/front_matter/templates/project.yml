@@ -35,3 +35,5 @@ fields:
       format: markdown
   label: Details
   description: A short, simple paragraph explaining the project.
+pages:
+- hugo/content/projects/commercial/example-project.md
