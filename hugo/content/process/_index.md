@@ -13,4 +13,4 @@ Whether it’s new construction, remodeling, additions, or renovation of existin
 
 ### Publications
 
-[2006_Spring_Indianapolis_Monthly_Home.pdf](https://app.forestry.io/sites/3i9wk33jehu4nq/body-media//images/2006_Spring_Indianapolis_Monthly_Home.pdf "Check out the 2006 Spring edition of Indianapolis Monthly Home!")
+Check out the [Spring 2006 Indianapolis Home Monthly](https://app.forestry.io/sites/3i9wk33jehu4nq/body-media//images/2006_Spring_Indianapolis_Monthly_Home.pdf)
