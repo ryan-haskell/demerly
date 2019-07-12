@@ -30,14 +30,14 @@ view { page } =
                     [ position relative
                     , Style.breakpoints.desktop
                         [ displayFlex
+                        , height Style.sizes.pageHeight
+                        , alignItems stretch
                         ]
                     ]
                 ]
                 [ div
                     [ css
-                        [ 
-                            
-                        Style.breakpoints.desktop
+                        [ Style.breakpoints.desktop
                             [ width (pct 50) ]
                         ]
                     ]
@@ -75,6 +75,7 @@ pageHeader page =
             , Style.breakpoints.desktop
                 [ margin zero
                 , padding Style.spacing.medium
+                , height (pct 100)
                 ]
             ]
         ]
