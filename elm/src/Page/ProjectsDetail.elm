@@ -76,7 +76,7 @@ update { page } msg model =
 
 view : Content -> Model -> Document Msg
 view { page } model =
-    { title = "Some Project | Projects | Demerly Architects"
+    { title = page.title ++ " | Projects | Demerly Architects"
     , body =
         [ main_
             [ css Style.styles.container ]
