@@ -64,3 +64,5 @@ fields:
     label: Fax
     config:
       required: true
+pages:
+- hugo/data/settings.yml
